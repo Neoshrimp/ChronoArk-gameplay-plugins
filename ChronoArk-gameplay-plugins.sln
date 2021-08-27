@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alternative-ShadowCurtain", "Alternative-ShadowCurtain\Alternative-ShadowCurtain.csproj", "{03944BF7-17EE-4895-A279-9686561A883E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Better-PainEqualsHappiness", "Better-PainEqualsHappiness\Better-PainEqualsHappiness.csproj", "{19F32F46-7F2F-40EC-8D10-425E017E16B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{03944BF7-17EE-4895-A279-9686561A883E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03944BF7-17EE-4895-A279-9686561A883E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03944BF7-17EE-4895-A279-9686561A883E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19F32F46-7F2F-40EC-8D10-425E017E16B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19F32F46-7F2F-40EC-8D10-425E017E16B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19F32F46-7F2F-40EC-8D10-425E017E16B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19F32F46-7F2F-40EC-8D10-425E017E16B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

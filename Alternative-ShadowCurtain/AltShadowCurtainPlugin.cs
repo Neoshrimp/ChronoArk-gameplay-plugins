@@ -1,13 +1,13 @@
 ﻿using BepInEx;
 using GameDataEditor;
 using HarmonyLib;
-
+using UnityEngine;
 
 namespace Alternative_ShadowCurtain
 {
     [BepInPlugin(GUID, "Alt Shadow Curtain", version)]
     [BepInProcess("ChronoArk.exe")]
-    public class MainPatcher : BaseUnityPlugin
+    public class AltShadowCurtainPlugin : BaseUnityPlugin
     {
         public const string GUID = "org.neo.chronoark.cardmod.shadowcurtain";
         public const string version = "1.0.0";
@@ -29,6 +29,7 @@ namespace Alternative_ShadowCurtain
         {
             static AccessTools.FieldRef<GDESkillData, bool> NoBasicSkillRef = AccessTools.FieldRefAccess<GDESkillData, bool>("_NoBasicSkill");
 
+
             [HarmonyPatch(nameof(S_Trisha_5.Init))]
             [HarmonyPrefix]
             static void InitPrefix(Skill ___MySkill)
@@ -38,7 +39,9 @@ namespace Alternative_ShadowCurtain
                 //removes no fix restriction
                 NoBasicSkillRef(___MySkill.MySkill) = false;
 
-                //___MySkill.AP = 10; // mana cost. Not updated in encyclopedia and looks like overload when card is in hand
+                //___MySkill.AP = 10; // mana cost. ___MySkill.MySkill:int _UseAp is 'default' mana cost. It's a private field with no good setter so use AccessTools to modify it
+                //_UseAp should have the same value as AP for mana number icon to be displayed in correct colour. However mana cost is still not updated in encyclopedia
+
                 //___MySkill.NotCount = true; // swiftness keyword
                 //___MySkill.NotChuck = true; // bind keyword(no cycling)
                 //___MySkill.isExcept = true; // except keyword (if combined with 'once' only 'except' will be displayed)
@@ -66,5 +69,6 @@ namespace Alternative_ShadowCurtain
                 __instance.SelfDestroy();
             }
         }
+
     }
 }

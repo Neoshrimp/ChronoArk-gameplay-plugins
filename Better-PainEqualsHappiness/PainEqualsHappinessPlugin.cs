@@ -24,10 +24,10 @@ namespace Better_PainEqualsHappiness
                 harmony.UnpatchAll(GUID);
         }
 
+        // B_Queen_10_T does not directly override the following methods therefore base class has to patched
         [HarmonyPatch(typeof(Buff))]
-        class PeH_Buff_Patch
+        class PEH_Buff_Patch
         {
-
             [HarmonyPatch(nameof(Buff.Init))]
             [HarmonyPostfix]
             static void InitPostfix(Buff __instance)
@@ -44,27 +44,22 @@ namespace Better_PainEqualsHappiness
             {
                 if (__instance is B_Queen_10_T)
                 {
-
-                    //TODO extent desc to include extra healing from ally dmg
-                    String extraDesc = "\nKindly note: at the end of the turn this buff expires <b>before</b> <sprite=1> debuff tick.";
-                    __result = String.Concat(__result, extraDesc); 
+                    __result = "When you take <color=purple>Pain damage</color>, instead of taking damage heal for <b>half</b> amount or for <b>full</b> amount if the damage was <b>directly</b> caused by an ally.\nKindly note: at the end of the turn this buff expires <b>before</b> <sprite=1> debuff tick.";
                 }
             }
         }
 
         [HarmonyPatch(typeof(B_Queen_10_T))]
-        class TransferPain_Buff_Patch
+        class TransferPain_effect_Patch
         {
-
-
             [HarmonyPatch(nameof(B_Queen_10_T.DamageTake))]
             [HarmonyPrefix]
             static bool DamageTake(B_Queen_10_T __instance, BattleChar User, int Dmg, bool Cri, ref bool resist, bool NODEF = false, bool NOEFFECT = false, BattleChar Target = null)
             {
-                
                 if (NODEF)
                 {
                     resist = true;
+                    // copied from B_ShadowPriest_7_S (Soul Stigma)
                     if (__instance.BChar.Info.Ally == User.Info.Ally && User != BattleSystem.instance.DummyChar)
                         __instance.BChar.Heal(User, (float)(Dmg), false, false, null);
                     else

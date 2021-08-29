@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alternative-ShadowCurtain",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Better-PainEqualsHappiness", "src\Better-PainEqualsHappiness\Better-PainEqualsHappiness.csproj", "{19F32F46-7F2F-40EC-8D10-425E017E16B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "More-cursed-battles", "src\More-cursed-battles\More-cursed-battles.csproj", "{5BE30F7E-CF3F-4A16-9FE4-4EDE86FFFC19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{19F32F46-7F2F-40EC-8D10-425E017E16B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19F32F46-7F2F-40EC-8D10-425E017E16B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19F32F46-7F2F-40EC-8D10-425E017E16B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BE30F7E-CF3F-4A16-9FE4-4EDE86FFFC19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE30F7E-CF3F-4A16-9FE4-4EDE86FFFC19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BE30F7E-CF3F-4A16-9FE4-4EDE86FFFC19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE30F7E-CF3F-4A16-9FE4-4EDE86FFFC19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

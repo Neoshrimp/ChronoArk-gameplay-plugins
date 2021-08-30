@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using GameDataEditor;
 using HarmonyLib;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Alternative_ShadowCurtain
@@ -13,6 +14,7 @@ namespace Alternative_ShadowCurtain
         public const string version = "1.0.0";
 
         private static readonly Harmony harmony = new Harmony(GUID);
+
         void Awake()
         {
             harmony.PatchAll();
@@ -24,12 +26,29 @@ namespace Alternative_ShadowCurtain
         }
 
 
+        // updates some changes in temporary 'database'. Some effects use this skill list to function properly, for example, golem module relic can never create once skills
+        // important things to update properly are keywords, mana cost, regular/red skill etc. However, some other changes might be required for skill to be properly integrated.
+        // Encyclopedia entries mana cost is still not updated properly even with this addition
+        // as far as I know PlayData.DataBaseInit is only called once when game is started from main menu
+        [HarmonyPatch(typeof(PlayData), nameof(PlayData.DataBaseInit))]
+        class DataBase_Patch
+        {
+            static void Postfix(List<GDESkillData> ____ALLSKILLLIST)
+            {
+                GDESkillData shadowCurtain = ____ALLSKILLLIST.Find(x => x.Key == "S_Trisha_5");
+                if (shadowCurtain != null)
+                {
+                    shadowCurtain.NoBasicSkill = false;
+                    shadowCurtain.Disposable = true;
+                }
+            }
+        }
+
+
+
         [HarmonyPatch(typeof(S_Trisha_5))]
         class Shadow_Curtain_Patch
         {
-            static AccessTools.FieldRef<GDESkillData, bool> NoBasicSkillRef = AccessTools.FieldRefAccess<GDESkillData, bool>("_NoBasicSkill");
-
-
             [HarmonyPatch(nameof(S_Trisha_5.Init))]
             [HarmonyPrefix]
             static void InitPrefix(Skill ___MySkill)
@@ -37,10 +56,12 @@ namespace Alternative_ShadowCurtain
                 // once keyword
                 ___MySkill.Disposable = true;
                 //removes no fix restriction
-                NoBasicSkillRef(___MySkill.MySkill) = false;
+                ___MySkill.MySkill.NoBasicSkill = false;
 
-                //___MySkill.AP = 10; // mana cost. ___MySkill.MySkill:int _UseAp is 'default' mana cost. It's a private field with no good setter so use AccessTools to modify it
+                //___MySkill.AP = 10; // mana cost. ___MySkill.MySkill:int _UseAp is 'default' mana cost.
                 //_UseAp should have the same value as AP for mana number icon to be displayed in correct colour. However mana cost is still not updated in encyclopedia
+                //___MySkill.IsWaste = true; // cannot exchange keyword
+
 
                 //___MySkill.NotCount = true; // swiftness keyword
                 //___MySkill.NotChuck = true; // bind keyword(no cycling)

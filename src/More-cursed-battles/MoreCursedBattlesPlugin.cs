@@ -133,14 +133,14 @@ namespace More_cursed_battles
                     if (amount > 0)
                         ___Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Misc_Gold, amount));
                 }
-                // ItemBase doesn't implement Equals so Remove doesn't work lel
+
                 if (___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == 250) > 0)
                     addGold(cursedGoldReward.Value);
-                
+
                 if (PlayData.TSavedata.StageNum == 1)
                 {
-                    ___Itemviews.Clear();
-                    addGold(cursedGoldReward.Value);
+                    if (___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Scroll_Scroll_Uncurse) > 0)
+                        addGold(cursedGoldReward.Value);
                 }
             }
         }

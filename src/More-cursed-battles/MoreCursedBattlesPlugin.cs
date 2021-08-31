@@ -14,7 +14,7 @@ namespace More_cursed_battles
     public class MoreCursedBattlesPlugin : BaseUnityPlugin
     {
         public const string GUID = "org.neo.chronoark.runmutators.morecursedbattles";
-        public const string version = "0.8.0";
+        public const string version = "1.0.0";
 
         private static readonly Harmony harmony = new Harmony(GUID);
 

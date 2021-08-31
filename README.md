@@ -8,7 +8,7 @@ Contributions are welcome and feed back is greatly appreciated!
 Made using  [Harmony](https://github.com/pardeike/Harmony) and [BepInEx](https://github.com/BepInEx/BepInEx)
 
 ---
-Currently only a very small selection of plugins is available but hopefully more will be added in the future.
+Currently only a handful of plugins are available but hopefully more will be added in the future.
 ## Installation
 
 Step 1. Download and set-up BepInEx. Refer to [official instructions](https://docs.bepinex.dev/master/articles/user_guide/installation/unity_mono.html).
@@ -20,8 +20,8 @@ Step 2. [Download mods](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/
 2. Locate local Chrono Ark files. Probably at `C:\Program Files (x86)\Steam\steamapps\common\Chrono Ark\` Otherwise, go to Steam > Library > Chrono Ark > Manage(:gear: icon) > Properties > Local files > Browse
 3. Extract BepInEx in `<Chrono Ark dir>\x64\Master` if using 64-bit version or `<Chrono Ark dir>\x86\Master` if using 32-bit
 4. Launch Chrono Ark (from Steam) and BeInEx will generate relevant files including `BepInEx\plugins` folder. Close the game.
-5. [Download mods](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases). Place extracted dlls into plugins folder.
-6. (optional) Backup save data. Unnecessary as none of the mods affect it directly or advance meta/story progression for free. If still desired refer to [this](https://steamcommunity.com/app/1188930/discussions/1/4917340730760337347/).
+5. [Download plugins](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases). Place extracted dlls into plugins folder.
+6. (OPTIONAL) Backup save data. Unnecessary as none of the mods affect it directly or advance meta/story progression for free. If still desired refer to [this](https://steamcommunity.com/app/1188930/discussions/1/4917340730760337347/).
 7. Enjoy!
 
 Some plugins like *More cursed battles* will generate .cfg files located at `<dir with ChronoArk.exe>\BepInEx\config` after being launched for the first time. Close game and modify .cfg file (txt editor will do) to configure plugin.
@@ -41,4 +41,4 @@ Some plugins like *More cursed battles* will generate .cfg files located at `<di
   
 
 ## Uninstallation
-Delete .dll files from `plugin` folder and optionally mod configuration files for `config` folder.
+Delete .dll files from `plugin` folder and optionally plugin configuration files from `config` folder.

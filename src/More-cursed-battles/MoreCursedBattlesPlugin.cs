@@ -2,7 +2,9 @@
 using BepInEx.Configuration;
 using GameDataEditor;
 using HarmonyLib;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TileTypes;
 using UnityEngine;
 
@@ -43,10 +45,9 @@ namespace More_cursed_battles
         }
 
         //TODO
-        //correctly generate curses for dual buildings in sanctuary
         //sanctuary dual golem mobs bug out with extra action
         //patch shared health buff to work with different max hp amounts
-        //add lift curse cards to bottom of the hand (or give an option to)
+        //add option for better cursed rewards in sanctuary
 
 
         //maybe reduce particle intensity on cursed enemies and/or map objects
@@ -97,7 +98,7 @@ namespace More_cursed_battles
                 {
                     bool isSanctuary = PlayData.TSavedata.StageNum == 5;
 
-                    if ((isSanctuary && enabledInSanctuary.Value) || !isSanctuary)
+                    if (!isSanctuary)
                     {
                         // checks are required for both tile battles and building battles
                         List<MapTile> battleList =
@@ -116,6 +117,61 @@ namespace More_cursed_battles
                                 curseCount++;
                             }
                         }
+                    }
+                    else if (isSanctuary && enabledInSanctuary.Value)
+                    {
+
+
+                        List<MapTile> battleList =
+                            ___Map.EventTileList.FindAll(x => (x.Info.Type is Monster) ||
+                            (x.TileEventObject != null && x.TileEventObject.ObjectData != null && x.TileEventObject.Monster));
+
+                        List<MapTile> updatedBattleList = new List<MapTile>();
+                        List<MapTile> chainList = new List<MapTile>();
+
+                        // exclude linked buildings from battles list
+                        foreach (MapTile mt in battleList)
+                        {
+                            if (mt.TileEventObject == null)
+                            {
+                                updatedBattleList.Add(mt);
+                            }
+                            else
+                            {
+                                if (mt.TileEventObject.MainChain != null && !chainList.Contains(mt))
+                                {
+                                    foreach (EventObject eo in mt.TileEventObject.MainChain.MainObjectEvent)
+                                    {
+                                        if (eo.Tile != mt)
+                                            chainList.Add(eo.Tile);
+                                    }
+                                    updatedBattleList.Add(mt);
+                                }
+                            }
+                        }
+
+                        int curseCount = updatedBattleList.FindAll(mt => mt.Info.Cursed).Count;
+                        KnuthShuffle(updatedBattleList);
+
+                        foreach (MapTile mt in updatedBattleList)
+                        {
+                            if (curseCount >= cursedBattleNumberConf.Value)
+                                break;
+                            if (mt.Info.Cursed == false)
+                            {
+                                mt.Info.Cursed = true;
+                                // curse linked buildings if they exists
+                                if (mt.TileEventObject != null && mt.TileEventObject.MainChain != null)
+                                {
+                                    foreach (EventObject eo in mt.TileEventObject.MainChain.MainObjectEvent)
+                                    {
+                                        eo.Tile.Info.Cursed = true;
+                                    }
+                                }
+                                curseCount++;
+                            }
+                        }
+
                     }
                 }
             }

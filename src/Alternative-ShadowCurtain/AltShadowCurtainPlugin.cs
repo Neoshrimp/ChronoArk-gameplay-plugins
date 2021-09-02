@@ -26,6 +26,9 @@ namespace Alternative_ShadowCurtain
         }
 
 
+        // TODO
+        // Update db if card is unlocked mid-run. Unlikely to be noticed or significantly affect gameplay. Or figure unified way to add/patch cards.
+
         // updates some changes in temporary 'database'. Some effects use this skill list to function properly, for example, golem module relic can never create once skills
         // important things to update properly are keywords, mana cost, regular/red skill etc. However, some other changes might be required for skill to be properly integrated.
         // Encyclopedia entries mana cost is still not updated properly even with this addition

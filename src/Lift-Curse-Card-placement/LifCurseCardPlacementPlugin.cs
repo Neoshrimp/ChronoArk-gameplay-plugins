@@ -2,9 +2,7 @@
 using GameDataEditor;
 using HarmonyLib;
 using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEngine;
+
 
 namespace Lift_Curse_Card_placement
 {
@@ -40,23 +38,28 @@ namespace Lift_Curse_Card_placement
             [HarmonyPostfix]
             static void MyTurnPostfix()
             {
-                if (BattleSystem.instance.TurnNum == 0)
+                if (BattleSystem.instance != null)
                 {
-                    // copied from S_TW_Red_6 (Helia's dark sun skill)
-                    IEnumerator Insert(Skill Temp)
+                    if (BattleSystem.instance.TurnNum == 0)
                     {
-                        if (BattleSystem.instance.AllyTeam.Skills.Remove(Temp))
+                        // copied from S_TW_Red_6 (Helia's dark sun skill)
+                        IEnumerator Insert(Skill Temp)
                         {
-                            yield return BattleSystem.instance.ActAfter();
-                            BattleSystem.instance.AllyTeam.Add(Temp, true);
+                            if (BattleSystem.instance.AllyTeam.Skills.Remove(Temp))
+                            {
+                                yield return BattleSystem.instance.ActAfter();
+                                BattleSystem.instance.AllyTeam.Add(Temp, true);
+                            }
+                            yield break;
                         }
-                        yield break;
-                    }
 
-                    Skill temp = BattleSystem.instance.AllyTeam.Skills.Find(x => x.MySkill.KeyID == GDEItemKeys.Skill_S_UnCurse);
-                    if (temp != null)
-                    {
-                        BattleSystem.DelayInput(Insert(temp));
+                        Skill temp = BattleSystem.instance.AllyTeam.Skills.Find(x => x.MySkill.KeyID == GDEItemKeys.Skill_S_UnCurse);
+                        if (temp != null)
+                        {
+                            BattleSystem.DelayInput(Insert(temp));
+                        }
+
+
                     }
                 }
             }

@@ -46,8 +46,10 @@ namespace More_cursed_battles
 
         //TODO
         //sanctuary dual golem mobs bug out with extra action
-        //patch shared health buff to work with different max hp amounts
         //add option for better cursed rewards in sanctuary
+        //remove buff persistence from dickhead trio
+
+        //check cursed deathbringer. checked. it's kinda bs
 
 
         //maybe reduce particle intensity on cursed enemies and/or map objects
@@ -176,6 +178,22 @@ namespace More_cursed_battles
                 }
             }
         }
+
+        [HarmonyPatch(typeof(B_CursedMob), nameof(B_CursedMob.Init))]
+        class SanctuaryGolemWorkaround_Patch
+        {
+            static void Postfix(B_CursedMob __instance)
+            {
+                if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Golem || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Golem)
+                {
+                    Debug.Log("golem");
+                    __instance.BChar.Info.PlusActCount.Clear();
+                    __instance.BChar.Info.PlusActCount.Add(1);
+                }
+            }
+        }
+
+
 
         [HarmonyPatch(typeof(B_CursedMob))]
         class Curse_Reward_Patch

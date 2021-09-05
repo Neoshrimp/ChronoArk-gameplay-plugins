@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "More-cursed-battles", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lift-Curse-Card-placement", "src\Lift-Curse-Card-placement\Lift-Curse-Card-placement.csproj", "{36BE8C8A-31CF-48EA-BDAA-370B2566ADFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Remove-elemental-debuff-persistence", "src\Remove-elemental-debuff-persistence\Remove-elemental-debuff-persistence.csproj", "{4F47122E-A054-4043-B8A6-E73FEEA8A5C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{36BE8C8A-31CF-48EA-BDAA-370B2566ADFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36BE8C8A-31CF-48EA-BDAA-370B2566ADFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36BE8C8A-31CF-48EA-BDAA-370B2566ADFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F47122E-A054-4043-B8A6-E73FEEA8A5C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F47122E-A054-4043-B8A6-E73FEEA8A5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F47122E-A054-4043-B8A6-E73FEEA8A5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F47122E-A054-4043-B8A6-E73FEEA8A5C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

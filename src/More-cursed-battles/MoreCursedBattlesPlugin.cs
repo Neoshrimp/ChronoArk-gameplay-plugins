@@ -31,12 +31,12 @@ namespace More_cursed_battles
 
         void Awake()
         {
-            cursedBattleNumberConf = Config.Bind("Generation config", "number_of_cursed_battles_per_stage", 2, "Maximum number of cursed battles per stage counting default one. Set to 5 to curse all non-boss battles on every stage");
-            enabledInSanctuary = Config.Bind("Generation config", "cursed_battles_in_Sanctuary", false, "Enables/Disables cursed fight generation in the final area.");
+            cursedBattleNumberConf = Config.Bind("Generation config", "number_of_cursed_battles_per_stage", 2, "Maximum number of cursed battles per stage counting default one. Set to 4 to curse all non-boss battles on every stage.");
+            enabledInSanctuary = Config.Bind("Generation config", "cursed_battles_in_Sanctuary", true, "Enables/Disables cursed fight generation in the final area.");
 
-            startingLiftingAmountConf = Config.Bind("Item config", "starting_lifting_scroll_amount", 2, "Amount of starting lifting scrolls. Lifting scrolls are identified. Mind that 1-2 cursed fights no longer drop lifting scrolls");
-            cursedGoldReward = Config.Bind("Item config", "cursed_gold_reward", 150, "Sets the amount of gold commonly rewarded by the cursed enemies. Vanilla amount is 250");
-            betterCursedRewardsInSanctuary = Config.Bind("Item config", "enable_better_cursed_rewards_in_Sanctuary", true, "Cursed enemies in Sanctuary drop better rewards like potions or rare items");
+            startingLiftingAmountConf = Config.Bind("Item config", "starting_lifting_scroll_amount", 2, "Amount of starting lifting scrolls. Lifting scrolls are identified. Mind that 1-2 cursed fights no longer drop lifting scrolls.");
+            cursedGoldReward = Config.Bind("Item config", "cursed_gold_reward", 150, "Sets the amount of gold commonly rewarded by killing cursed enemies. Vanilla amount is 250.");
+            betterCursedRewardsInSanctuary = Config.Bind("Item config", "enable_better_cursed_rewards_in_Sanctuary", true, "Cursed enemies in Sanctuary drop better rewards like potions or rare items.");
 
             harmony.PatchAll();
         }

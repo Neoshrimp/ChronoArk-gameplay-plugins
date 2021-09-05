@@ -29,14 +29,15 @@ Some plugins like *More cursed battles* will generate .cfg files located at `<di
 ## Plugin List
 
 * ### More cursed battles :feelsgood:
-  Adds more cursed battles to every stage. Amount of gold rewarded by killing cursed enemies is reduced. Receive 2 identified lifting scrolls at the start. All these values are configurable in generated .cfg file. Works independent of the game difficulty.
-  Sanctuary area is unchanged (for now).
+  Adds more cursed battles to every stage. Amount of gold rewarded by killing cursed enemies is reduced. Receive 2 identified lifting scrolls at the start. Cursed battles in Sanctuary work properly now and optionally offer better rewards. All these values are configurable in generated .cfg file. Works independent of the game difficulty.
 * ### Lift Curse card placement :scroll:
   Lift Curse cards received during cursed battles are placed at the bottom of the hand instead of top. Makes Azar's passive and some Helia's cards a bit better on early turns.
 * ### Better Pain Equals Happiness! :carrot:
   Extends Transit Pain buff duration by one turn and adds additional healing when receiving pain damage from allies.
 * ### Alternative Shadow Curtain :dagger:
   Shadow Curtain can only be used Once but can be set as a fixed skill. No longer busted when used with mirror images but better compared to 1.56 shadow curtain.
+* ### Elemental trio debuff persistence removal :fire:
+  Sanctuary elemental trio debuffs no longer remain after battle.
   
   
 

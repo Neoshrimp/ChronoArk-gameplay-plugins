@@ -24,6 +24,7 @@ namespace More_cursed_battles
         private static ConfigEntry<int> cursedBattleNumberConf;
         private static ConfigEntry<bool> enabledInSanctuary;
         private static ConfigEntry<int> cursedGoldReward;
+        private static ConfigEntry<bool> betterCursedRewardsInSanctuary;
 
 
 
@@ -31,10 +32,11 @@ namespace More_cursed_battles
         void Awake()
         {
             cursedBattleNumberConf = Config.Bind("Generation config", "number_of_cursed_battles_per_stage", 2, "Maximum number of cursed battles per stage counting default one. Set to 5 to curse all non-boss battles on every stage");
-            enabledInSanctuary = Config.Bind("Generation config", "cursed_battles_in_Sanctuary", false, "ATTENTION! currently isn't implemented properly. Keep it off\nEnables/Disables cursed fight generation in the final area.");
+            enabledInSanctuary = Config.Bind("Generation config", "cursed_battles_in_Sanctuary", false, "Enables/Disables cursed fight generation in the final area.");
 
             startingLiftingAmountConf = Config.Bind("Item config", "starting_lifting_scroll_amount", 2, "Amount of starting lifting scrolls. Lifting scrolls are identified. Mind that 1-2 cursed fights no longer drop lifting scrolls");
             cursedGoldReward = Config.Bind("Item config", "cursed_gold_reward", 150, "Sets the amount of gold commonly rewarded by the cursed enemies. Vanilla amount is 250");
+            betterCursedRewardsInSanctuary = Config.Bind("Item config", "enable_better_cursed_rewards_in_Sanctuary", true, "Cursed enemies in Sanctuary drop better rewards like potions or rare items");
 
             harmony.PatchAll();
         }
@@ -45,7 +47,6 @@ namespace More_cursed_battles
         }
 
         //TODO
-        //add option for better cursed rewards in sanctuary
         //remove buff persistence from dickhead trio
 
         //check cursed deathbringer. checked. it's kinda bs
@@ -194,6 +195,28 @@ namespace More_cursed_battles
                 {
                     if (amount > 0)
                         ___Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Misc_Gold, amount));
+                }
+
+                if (betterCursedRewardsInSanctuary.Value)
+                {
+                    ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == 250);
+
+
+                    if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Guard_0 || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Guard_1
+                        || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Guard_2)
+                    {
+                        ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(4)));
+                    }
+                    if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Summoner || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_SleepDochi
+                        || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Golem || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Golem2)
+                    { 
+                        ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(3)));
+                    }
+                    if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_4thDochi || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_MagicDochi 
+                        || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_AngryDochi)
+                    { 
+                        ___Itemviews.AddRange(InventoryManager.RewardKey(GDEItemKeys.Reward_R_GetPotion, false, false));
+                    }
                 }
 
                 if (___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == 250) > 0)

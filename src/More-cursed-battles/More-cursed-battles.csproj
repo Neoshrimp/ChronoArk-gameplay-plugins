@@ -58,6 +58,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SactuaryGolemAIPatch.cs" />
     <Compile Include="LifeSharePatch.cs" />
     <Compile Include="MoreCursedBattlesPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

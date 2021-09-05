@@ -47,6 +47,8 @@ namespace More_cursed_battles
         }
     }
 
+
+    // reset max hp modification on in case of uncurse
     [HarmonyPatch(typeof(SkillExtended_UnCurse), nameof(SkillExtended_UnCurse.SkillUseSingle))]
     class UncurseCardPatch
     {

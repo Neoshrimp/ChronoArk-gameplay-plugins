@@ -15,12 +15,16 @@ Step 1. Download and set-up BepInEx. Refer to [official instructions](https://do
 
 Step 2. [Download mods](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases) and put selected .dll files to `BepInEx/plugins` folder.
 
+### *OR*
+
+Download with BepInEx included. 64-bit version [[here]](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.0/allplugins_BepInEx_x64_included-06-09-21.zip), 32-bit version [[here]](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.0/allplugins_BepInEx_x86_included-06-09-21.zip). Extract to `<Chrono Ark dir>\x64\Master` for 64-bit version or `<Chrono Ark dir>\x86\Master` for 32-bit (BepInEx folder should be in the same directory where ChronoArk.exe is).
+
 ### Step-by-step guide:
-1. Download [BepInEx](https://github.com/BepInEx/BepInEx/releases). Make sure to download correct version (32-bit or 64-bit)
+1. Download [BepInEx](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.15). Make sure to download correct version (32-bit or 64-bit)
 2. Locate local Chrono Ark files. Probably at `C:\Program Files (x86)\Steam\steamapps\common\Chrono Ark\` Otherwise, go to Steam > Library > Chrono Ark > Manage(:gear: icon) > Properties > Local files > Browse
 3. Extract BepInEx in `<Chrono Ark dir>\x64\Master` if using 64-bit version or `<Chrono Ark dir>\x86\Master` if using 32-bit
 4. Launch Chrono Ark (from Steam) and BeInEx will generate relevant files including `BepInEx\plugins` folder. Close the game.
-5. [Download plugins](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases). Place extracted dlls into plugins folder.
+5. [Download plugins](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/tag/1.1.0). Place extracted dlls into plugins folder.
 6. (OPTIONAL) Backup save data. Unnecessary as none of the mods affect it directly or advance meta/story progression for free. If still desired refer to [this](https://steamcommunity.com/app/1188930/discussions/1/4917340730760337347/).
 7. Enjoy!
 
@@ -33,9 +37,9 @@ Some plugins like *More cursed battles* will generate .cfg files located at `<di
 * ### Lift Curse card placement :scroll:
   Lift Curse cards received during cursed battles are placed at the bottom of the hand instead of top. Makes Azar's passive and some Helia's cards a bit better on early turns.
 * ### Better Pain Equals Happiness! :carrot:
-  Extends Transit Pain buff duration by one turn and adds additional healing when receiving pain damage from allies.
+  Buffs Huz's Pain Equals Happiness red card. Extends Transit Pain buff duration by one turn and adds additional healing when receiving pain damage from allies.
 * ### Alternative Shadow Curtain :dagger:
-  Shadow Curtain can only be used Once but can be set as a fixed skill. No longer busted when used with mirror images but better compared to 1.56 shadow curtain.
+  Trisha's Shadow Curtain can only be used Once but can be set as a fixed skill. No longer busted when used with mirror images but better compared to 1.56 shadow curtain.
 * ### Elemental trio debuff persistence removal :fire:
   Sanctuary elemental trio debuffs no longer remain after battle.
   

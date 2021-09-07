@@ -80,6 +80,8 @@ namespace More_cursed_battles
 
         }
 
+
+
         // Fisher–Yates shuffle
         private static void KnuthShuffle<T>(List<T> list)
         {
@@ -89,6 +91,8 @@ namespace More_cursed_battles
                 T temp = list[i]; list[i] = list[j]; list[j] = temp;
             }
         }
+
+        static private List<MapTile> ogCursedTiles = new List<MapTile>();
 
         [HarmonyPatch(typeof(StageSystem))]
         class Generate_Cursed_Battles_Patch
@@ -107,7 +111,9 @@ namespace More_cursed_battles
                         List<MapTile> battleList =
                             ___Map.EventTileList.FindAll(x => (x.Info.Type is Monster) ||
                             (x.TileEventObject != null && x.TileEventObject.ObjectData != null && x.TileEventObject.Monster));
-                        int curseCount = battleList.FindAll(x => x.Info.Cursed == true).Count;
+
+                        ogCursedTiles = battleList.FindAll(x => x.Info.Cursed == true);
+                        int curseCount = ogCursedTiles.Count;
 
                         KnuthShuffle(battleList);
                         foreach (MapTile mt in battleList)
@@ -128,6 +134,8 @@ namespace More_cursed_battles
                         List<MapTile> battleList =
                             ___Map.EventTileList.FindAll(x => (x.Info.Type is Monster) ||
                             (x.TileEventObject != null && x.TileEventObject.ObjectData != null && x.TileEventObject.Monster));
+
+                        ogCursedTiles = battleList.FindAll(x => x.Info.Cursed == true);
 
                         List<MapTile> updatedBattleList = new List<MapTile>();
                         List<MapTile> chainList = new List<MapTile>();
@@ -152,6 +160,7 @@ namespace More_cursed_battles
                                 }
                             }
                         }
+
 
                         int curseCount = updatedBattleList.FindAll(mt => mt.Info.Cursed).Count;
                         KnuthShuffle(updatedBattleList);
@@ -180,7 +189,26 @@ namespace More_cursed_battles
             }
         }
 
-
+        // changes emitted particle colour for additionally generated cursed battles
+        [HarmonyPatch(typeof(MiniHex), nameof(MiniHex.SightUpdate))]
+        class MiniHexPatch
+        {
+            static void Postfix(MiniHex __instance)
+            {
+                if (__instance.MyTile != null && __instance.Cursed != null)
+                {
+                    if (!ogCursedTiles.Contains(__instance.MyTile))
+                    {
+                        ParticleSystem ps = __instance.Cursed.GetComponent<ParticleSystem>();
+                        if (ps != null)
+                        {
+                            var main = ps.main;
+                            main.startColor = new ParticleSystem.MinMaxGradient(new Color(216f / 255f, 43f / 255f, 200f / 255f), Color.black);
+                        }
+                    }
+                }
+            }
+        }
 
 
 
@@ -209,12 +237,12 @@ namespace More_cursed_battles
                     }
                     if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Summoner || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_SleepDochi
                         || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Golem || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Golem2)
-                    { 
+                    {
                         ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(3)));
                     }
-                    if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_4thDochi || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_MagicDochi 
+                    if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_4thDochi || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_MagicDochi
                         || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_AngryDochi)
-                    { 
+                    {
                         ___Itemviews.AddRange(InventoryManager.RewardKey(GDEItemKeys.Reward_R_GetPotion, false, false));
                     }
                 }

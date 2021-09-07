@@ -56,6 +56,9 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\CAx64_libs\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>..\..\..\..\CAx64_libs\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SactuaryGolemAIPatch.cs" />

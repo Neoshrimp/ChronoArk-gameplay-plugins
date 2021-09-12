@@ -32,16 +32,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\CAx64_libs\0Harmony.dll</HintPath>
+      <HintPath>..\..\..\..\CAx64_libs\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\CAx64_libs\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\CAx64_libs\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\CAx64_libs\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\..\..\..\CAx64_libs\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\..\..\CAx64_libs\BepInEx.dll</HintPath>
+      <HintPath>..\..\..\..\CAx64_libs\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,10 +51,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\CAx64_libs\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\CAx64_libs\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\CAx64_libs\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\..\CAx64_libs\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

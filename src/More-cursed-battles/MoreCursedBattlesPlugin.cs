@@ -195,9 +195,11 @@ namespace More_cursed_battles
         {
             static void Postfix(MiniHex __instance)
             {
-                if (__instance.MyTile != null && __instance.Cursed != null)
+                MapTile mt = __instance.MyTile;
+                if (mt != null && __instance.Cursed != null && 
+                    (mt.Info.Type is Monster || (mt.TileEventObject != null && mt.TileEventObject.ObjectData != null && mt.TileEventObject.Monster)))
                 {
-                    if (!ogCursedTiles.Contains(__instance.MyTile))
+                    if (!ogCursedTiles.Contains(mt))
                     {
                         ParticleSystem ps = __instance.Cursed.GetComponent<ParticleSystem>();
                         if (ps != null)
@@ -227,22 +229,26 @@ namespace More_cursed_battles
 
                 if (betterCursedRewardsInSanctuary.Value)
                 {
-                    ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == 250);
 
-
+                    // add orange item reward if facing cursed dickhead trio
                     if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Guard_0 || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Guard_1
                         || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Guard_2)
                     {
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == 250);
                         ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(4)));
                     }
+                    // add purple item reward
                     if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Summoner || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_SleepDochi
                         || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Golem || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Golem2)
                     {
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == 250);
                         ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(3)));
                     }
+                    // potions as a reward for 'mandatory' fight
                     if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_4thDochi || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_MagicDochi
                         || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_AngryDochi)
                     {
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == 250);
                         ___Itemviews.AddRange(InventoryManager.RewardKey(GDEItemKeys.Reward_R_GetPotion, false, false));
                     }
                 }

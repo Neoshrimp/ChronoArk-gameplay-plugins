@@ -65,12 +65,15 @@ namespace Cursed_Bosses
             [HarmonyPrefix]
             static void CreatEnemyPrefix(string EnemyString, ref bool Curse)
             {
-                if (BattleSystem.instance.TurnNum == 0)
+                if (BattleSystem.instance != null)
                 {
-                    GDEEnemyData gdeenemyData = new GDEEnemyData(EnemyString);
-                    if (gdeenemyData.Boss == true)
+                    if (BattleSystem.instance.TurnNum == 0)
                     {
-                        Curse = true;
+                        GDEEnemyData gdeenemyData = new GDEEnemyData(EnemyString);
+                        if (gdeenemyData.Boss == true)
+                        {
+                            Curse = true;
+                        }
                     }
                 }
             }

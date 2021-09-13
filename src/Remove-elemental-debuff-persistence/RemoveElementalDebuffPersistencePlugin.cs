@@ -44,7 +44,7 @@ namespace Remove_elemental_debuff_persistence
         {
             static void Postfix(Buff __instance)
             {
-                if(__instance.BuffData.Key == GDEItemKeys.Buff_B_S4_Guard_1_0_T)
+                if(__instance.BuffData != null && __instance.BuffData.Key != null && __instance.BuffData.Key == GDEItemKeys.Buff_B_S4_Guard_1_0_T)
                     __instance.BuffData.IsFieldBuff = false;
             }
         }

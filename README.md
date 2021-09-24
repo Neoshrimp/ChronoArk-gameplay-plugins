@@ -51,4 +51,4 @@ Some plugins like *More cursed battles* will generate .cfg files located at `<di
   
 
 ## Uninstallation
-Delete .dll files from `plugin` folder and optionally plugin configuration files from `config` folder.
+Delete .dll files from `plugin` folder and optionally plugin configuration files from `config` folder. 

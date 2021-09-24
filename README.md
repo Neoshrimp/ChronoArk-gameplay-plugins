@@ -3,6 +3,7 @@
 ### [**한국어 번역 Korean Translation**](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/blob/master/KoreanREADME.md)
 Thanks to [windypanda1](https://github.com/fwqefwqef) Korean for translation!
 
+---
 Repo for various [Chrono Ark](https://store.steampowered.com/app/1188930/Chrono_Ark/) plugins modifying course of the game. 
 Modifications can include new game modes, new or altered items or cards, quality of life improvements and so on.
 

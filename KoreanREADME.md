@@ -1,5 +1,9 @@
 # 크로노 아크 게임플레이 플러그인 :baguette_bread: :watch: :hedgehog:
 
+번역을 위해 [windypanda1](https://github.com/fwqefwqef) 한국어 감사합니다! 
+
+---
+
 이 레파지토리에는 [크로노 아크](https://store.steampowered.com/app/1188930/Chrono_Ark/)의 여러 부분을 변경하는 플러그인들이 들어있습니다. 변경사항은 새로운 게임 모드, 새로 추가되거나 변경된 아이템이나 카드, 자잘한 게임플레이 향상 등이 있습니다.
 
 기여는 환영이고 피드백도 주시면 감사할 것 같습니다!
@@ -26,7 +30,7 @@ BepInEx가 포함된 패키지를 다운받습니다. 64비트 버전 [[여기]]
 2. 로컬 크로노 아크 파일을 찾습니다. 아마도 `C:\Program Files (x86)\Steam\steamapps\common\Chrono Ark\` 에 있을 겁니다. 그렇지 않다면 Steam > 라이브러리 > 크로노 아크 > 관리(:gear: 아이콘) > 속성 > 로컬 파일 > 찾아보기
 3. 64비트 버전을 사용하는 경우 `<크로노 아크 디렉토리>\x64\Master에 BepInEx` 를 압축 풀고 32비트 버전을 사용하는 경우 `<크로노 아크 디렉토리>\x86\Master` 에 압축을 풉니다.
 4. Steam에서 크로노 아크를 실행하면 BepInEx가 `BepInEx\plugins` 폴더를 포함한 관련 파일을 자동생성합니다. 게임을 닫습니다.
-5. [플러그인을 다운로드합니다](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/tag/1.1.0). 압축을 풀고 dll파일들을 plugins 폴더에 넣습니다.
+5. [플러그인을 다운로드합니다](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/CAv1.62_allplugins-13-09-2021.zip). 압축을 풀고 dll파일들을 plugins 폴더에 넣습니다.
 6. (선택) 세이브 데이터를 백업합니다. 모드가 세이브를 망칠 걱정은 없어서 할 필요는 없습니다. 여전히 원하는 경우 [참조](https://steamcommunity.com/app/1188930/discussions/1/4917340730760337347/).
 7. 게임을 즐깁니다!
 

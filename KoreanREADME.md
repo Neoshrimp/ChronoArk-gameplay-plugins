@@ -22,7 +22,7 @@ Step 2. [모드를 다운로드하고](https://github.com/Neoshrimp/ChronoArk-ga
 
 ### *또는*
 
-BepInEx가 포함된 패키지를 다운받습니다. 64비트 버전 [[여기]](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/allplugins_BepInEx_x64_included-13-09-2021.zip), 32비트 버전 [[여기]](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/allplugins_BepInEx_x86_included-13-09-2021.zip). 64비트 버전의 경우 `<크로노 아크 디렉토리>\x64\Master또는 32` 비트 버전의 경우 `<크로노 아크 디렉토리>\x86\Master에` 압축을 풉니다 (BepInEx 폴더는 ChronoArk.exe가 있는 동일한 디렉토리에 있어야 함).
+BepInEx가 포함된 패키지를 다운받습니다. 64비트 버전 [[여기]](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/allplugins_BepInEx_x64_included-13-09-2021.zip), 32비트 버전 [[여기]](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/allplugins_BepInEx_x86_included-13-09-2021.zip). 64비트 버전의 경우 `<크로노 아크 디렉토리>\x64\Master` 또는 32 비트 버전의 경우 `<크로노 아크 디렉토리>\x86\Master` 에 압축을 풉니다 (BepInEx 폴더는 ChronoArk.exe가 있는 동일한 디렉토리에 있어야 함).
 
 ### 단계별 가이드:
 

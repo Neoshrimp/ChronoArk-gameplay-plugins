@@ -1,5 +1,8 @@
 # Chrono Ark Gameplay Plugins :baguette_bread: :watch: :hedgehog:
 
+### [**한국어 번역 Korean Translation**](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/blob/master/KoreanREADME.md)
+Thanks to [windypanda1](https://github.com/fwqefwqef) Korean for translation!
+
 Repo for various [Chrono Ark](https://store.steampowered.com/app/1188930/Chrono_Ark/) plugins modifying course of the game. 
 Modifications can include new game modes, new or altered items or cards, quality of life improvements and so on.
 
@@ -25,7 +28,7 @@ Extract to `<Chrono Ark dir>\x64\Master` for 64-bit version or `<Chrono Ark dir>
 2. Locate local Chrono Ark files. Probably at `C:\Program Files (x86)\Steam\steamapps\common\Chrono Ark\` Otherwise, go to Steam > Library > Chrono Ark > Manage(:gear: icon) > Properties > Local files > Browse
 3. Extract BepInEx in `<Chrono Ark dir>\x64\Master` if using 64-bit version or `<Chrono Ark dir>\x86\Master` if using 32-bit
 4. Launch Chrono Ark (from Steam) and BeInEx will generate relevant files including `BepInEx\plugins` folder. Close the game.
-5. [Download plugins](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/tag/1.1.0). Place extracted dlls into plugins folder.
+5. [Download plugins](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/CAv1.62_allplugins-13-09-2021.zip). Place extracted dlls into plugins folder.
 6. (OPTIONAL) Backup save data. Unnecessary as none of the mods affect it directly or advance meta/story progression for free. If still desired refer to [this](https://steamcommunity.com/app/1188930/discussions/1/4917340730760337347/).
 7. Enjoy!
 

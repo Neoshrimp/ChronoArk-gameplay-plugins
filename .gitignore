@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/matchSliding.txt
+/matchIn.txt
+/matchFuzzy.txt
+/create-release.sh

@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Remove-elemental-debuff-per
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cursed-Bosses", "src\Cursed-Bosses\Cursed-Bosses.csproj", "{5CC5D665-CB74-462D-9E97-51835064AB5A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Randomizer", "src\Randomizer\Randomizer.csproj", "{8F168850-DD2F-456A-97E0-8133E2B2DD05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Remove-hitcap", "src\Remove-hitcap\Remove-hitcap.csproj", "{A58E71E6-F09C-4A0C-A646-0C985D24C93D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{5CC5D665-CB74-462D-9E97-51835064AB5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CC5D665-CB74-462D-9E97-51835064AB5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CC5D665-CB74-462D-9E97-51835064AB5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F168850-DD2F-456A-97E0-8133E2B2DD05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F168850-DD2F-456A-97E0-8133E2B2DD05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F168850-DD2F-456A-97E0-8133E2B2DD05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F168850-DD2F-456A-97E0-8133E2B2DD05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A58E71E6-F09C-4A0C-A646-0C985D24C93D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A58E71E6-F09C-4A0C-A646-0C985D24C93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A58E71E6-F09C-4A0C-A646-0C985D24C93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A58E71E6-F09C-4A0C-A646-0C985D24C93D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

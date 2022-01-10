@@ -4,6 +4,8 @@
 Thanks to [windypanda1](https://github.com/fwqefwqef) Korean for translation!
 
 ---
+## Use plugins in this repo with Chrono Ark 1.7beta version at your own risk. More likely than not they are gonna break the game
+
 Repo for various [Chrono Ark](https://store.steampowered.com/app/1188930/Chrono_Ark/) plugins modifying course of the game. 
 Modifications can include new game modes, new or altered items or cards, quality of life improvements and so on.
 

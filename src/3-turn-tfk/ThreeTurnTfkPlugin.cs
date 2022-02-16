@@ -10,7 +10,7 @@ using System.Reflection;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace Three_turn_tfk
+namespace Select_skills_on_Normal
 {
     [BepInPlugin(GUID, "3 turn TFK", version)]
     [BepInProcess("ChronoArk.exe")]

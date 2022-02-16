@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Three_turn_tfk
+namespace Select_skills_on_Normal
 {
     class FunnyMaymays
     {

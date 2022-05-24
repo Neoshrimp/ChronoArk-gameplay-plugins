@@ -2,11 +2,15 @@
 using BepInEx.Configuration;
 using GameDataEditor;
 using HarmonyLib;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using TileTypes;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 namespace More_cursed_battles
@@ -23,20 +27,29 @@ namespace More_cursed_battles
         private static ConfigEntry<int> startingLiftingAmountConf;
         private static ConfigEntry<int> cursedBattleNumberConf;
         private static ConfigEntry<bool> enabledInSanctuary;
+        private static ConfigEntry<bool> enabledInCW;
+
         private static ConfigEntry<int> cursedGoldReward;
         private static ConfigEntry<bool> betterCursedRewardsInSanctuary;
+        private static ConfigEntry<bool> betterCursedRewardsInCW;
+        private static ConfigEntry<bool> restoreUncommonRewards;
+
+
 
 
 
 
         void Awake()
         {
-            cursedBattleNumberConf = Config.Bind("Generation config", "number_of_cursed_battles_per_stage", 2, "Maximum number of cursed battles per stage counting default one. Set to 4 to curse all non-boss battles on every stage.");
+            cursedBattleNumberConf = Config.Bind("Generation config", "number_of_cursed_battles_per_stage", 2, "Additional cursed battles for each stage. Set to 4 to curse all non-boss battles on every stage.");
             enabledInSanctuary = Config.Bind("Generation config", "cursed_battles_in_Sanctuary", true, "Enables/Disables cursed fight generation in the final area. (acceptable values: true/false)");
+            enabledInCW = Config.Bind("Generation config", "cursed_battles_in_Crimson_Wilderness", true, "Enables/Disables cursed fight generation in Crimson Wilderness. (acceptable values: true/false)");
 
             startingLiftingAmountConf = Config.Bind("Item config", "starting_lifting_scroll_amount", 2, "Amount of starting lifting scrolls. Lifting scrolls are identified. Mind that 1-2 cursed fights no longer drop lifting scrolls.");
-            cursedGoldReward = Config.Bind("Item config", "cursed_gold_reward", 150, "Sets the amount of gold commonly rewarded by killing cursed enemies. Vanilla amount is 250.");
+            cursedGoldReward = Config.Bind("Item config", "cursed_gold_reward", 100, "Sets the amount of gold commonly rewarded by killing cursed enemies. Vanilla amount is 200.");
             betterCursedRewardsInSanctuary = Config.Bind("Item config", "enable_better_cursed_rewards_in_Sanctuary", true, "Cursed enemies in Sanctuary drop better rewards like potions or rare items. (acceptable values: true/false)");
+            betterCursedRewardsInCW = Config.Bind("Item config", "enable_better_cursed_rewards_in_Crimson_Wilderness", true, "Cursed enemies in Crimson Wilderness drop better rewards. (acceptable values: true/false)");
+            restoreUncommonRewards = Config.Bind("Item config", "restore_uncommon_rewards", true, "Make certain enemies drop blue equipment as they used to (acceptable values: true/false)");
 
             harmony.PatchAll();
         }
@@ -49,6 +62,7 @@ namespace More_cursed_battles
         //TODO
         //add 
 
+        //loading removes original red particles
         //check cursed deathbringer. checked. it's kinda bs
         //cursed lightning hedgehogs produces exception
 
@@ -103,31 +117,13 @@ namespace More_cursed_battles
             {
                 if (!PlayData.TSavedata.IsLoaded)
                 {
-                    bool isSanctuary = PlayData.TSavedata.StageNum == 5;
+                    bool isSanctuary = ___Map.StageData.Key == GDEItemKeys.Stage_Stage4;
+                    bool isCrimson = ___Map.StageData.Key == GDEItemKeys.Stage_Stage_Crimson;
 
-                    if (!isSanctuary)
-                    {
-                        // checks are required for both tile battles and building battles
-                        List<MapTile> battleList =
-                            ___Map.EventTileList.FindAll(x => (x.Info.Type is Monster) ||
-                            (x.TileEventObject != null && x.TileEventObject.ObjectData != null && x.TileEventObject.Monster));
+                    Debug.Log(isSanctuary);
+                    Debug.Log(isCrimson);
 
-                        ogCursedTiles = battleList.FindAll(x => x.Info.Cursed == true);
-                        int curseCount = ogCursedTiles.Count;
-
-                        KnuthShuffle(battleList);
-                        foreach (MapTile mt in battleList)
-                        {
-                            if (curseCount >= cursedBattleNumberConf.Value)
-                                break;
-                            if (mt.Info.Cursed == false)
-                            {
-                                mt.Info.Cursed = true;
-                                curseCount++;
-                            }
-                        }
-                    }
-                    else if (isSanctuary && enabledInSanctuary.Value)
+                    if ((!isSanctuary && !isCrimson) || (isSanctuary && enabledInSanctuary.Value) || (isCrimson && enabledInCW.Value))
                     {
 
 
@@ -138,31 +134,34 @@ namespace More_cursed_battles
                         ogCursedTiles = battleList.FindAll(x => x.Info.Cursed == true);
 
                         List<MapTile> updatedBattleList = new List<MapTile>();
-                        List<MapTile> chainList = new List<MapTile>();
+                        var chainList = new HashSet<MapTile>();
+
 
                         // exclude linked buildings from battles list
                         foreach (MapTile mt in battleList)
                         {
+                            if (mt.Info.Cursed)
+                                continue;
                             if (mt.TileEventObject == null)
                             {
                                 updatedBattleList.Add(mt);
                             }
-                            else
+                            else if (mt.TileEventObject.MainChain == null)
                             {
-                                if (mt.TileEventObject.MainChain != null && !chainList.Contains(mt))
+                                updatedBattleList.Add(mt);
+                            }
+                            else if (!chainList.Contains(mt))
+                            {
+                                foreach (EventObject eo in mt.TileEventObject.MainChain.MainObjectEvent)
                                 {
-                                    foreach (EventObject eo in mt.TileEventObject.MainChain.MainObjectEvent)
-                                    {
-                                        if (eo.Tile != mt)
-                                            chainList.Add(eo.Tile);
-                                    }
-                                    updatedBattleList.Add(mt);
+                                    if (eo.Tile != mt)
+                                        chainList.Add(eo.Tile);
                                 }
+                                updatedBattleList.Add(mt);
                             }
                         }
 
-
-                        int curseCount = updatedBattleList.FindAll(mt => mt.Info.Cursed).Count;
+                        int curseCount = 0;
                         KnuthShuffle(updatedBattleList);
 
                         foreach (MapTile mt in updatedBattleList)
@@ -172,6 +171,7 @@ namespace More_cursed_battles
                             if (mt.Info.Cursed == false)
                             {
                                 mt.Info.Cursed = true;
+                                // no longer relevant in 1.82 as there are no more chained events
                                 // curse linked buildings if they exists
                                 if (mt.TileEventObject != null && mt.TileEventObject.MainChain != null)
                                 {
@@ -183,7 +183,6 @@ namespace More_cursed_battles
                                 curseCount++;
                             }
                         }
-
                     }
                 }
             }
@@ -217,6 +216,8 @@ namespace More_cursed_battles
         [HarmonyPatch(typeof(B_CursedMob))]
         class Curse_Reward_Patch
         {
+            static int vanillaGoldReward;
+
             [HarmonyPatch(nameof(B_CursedMob.Init))]
             [HarmonyPostfix]
             static void InitPostfix(B_CursedMob __instance, List<ItemBase> ___Itemviews)
@@ -227,39 +228,70 @@ namespace More_cursed_battles
                         ___Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Misc_Gold, amount));
                 }
 
-                if (betterCursedRewardsInSanctuary.Value)
+                if (betterCursedRewardsInSanctuary.Value && PlayData.TSavedata.NowStageMapKey == GDEItemKeys.Stage_Stage4)
                 {
 
                     // add orange item reward if facing cursed dickhead trio
                     if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Guard_0 || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Guard_1
                         || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Guard_2)
                     {
-                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == 250);
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == vanillaGoldReward);
                         ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(4)));
                     }
                     // add purple item reward
                     if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Summoner || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_SleepDochi
                         || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Golem || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_Golem2)
                     {
-                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == 250);
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == vanillaGoldReward);
                         ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(3)));
                     }
                     // potions as a reward for 'mandatory' fight
                     if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_4thDochi || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_MagicDochi
                         || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S4_AngryDochi)
                     {
-                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == 250);
-                        ___Itemviews.AddRange(InventoryManager.RewardKey(GDEItemKeys.Reward_R_GetPotion, false, false));
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == vanillaGoldReward);
+                        ___Itemviews.AddRange(InventoryManager.RewardKey(GDEItemKeys.Reward_R_GetPotion, false));
                     }
                 }
 
-                if (___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == 250) > 0)
+                if (___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == vanillaGoldReward) > 0)
                     addGold(cursedGoldReward.Value);
 
                 if (PlayData.TSavedata.StageNum == 1)
                 {
                     if (___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Scroll_Scroll_Uncurse) > 0)
                         addGold(cursedGoldReward.Value);
+                }
+            }
+
+            [HarmonyPatch(nameof(B_CursedMob.Init))]
+            [HarmonyTranspiler]
+            static IEnumerable<CodeInstruction> InitTranspiler(IEnumerable<CodeInstruction> instructions)
+            {
+                int i = 0;
+                var list = instructions.ToList();
+                var c = list.Count;
+                foreach (var ci in instructions)
+                {
+                    if (ci.opcode == OpCodes.Ldc_I4_1
+                        && list[Math.Min(i+1, c-1)].opcode == OpCodes.Call
+                        && ((MethodInfo)list[Math.Min(i + 1, c - 1)].operand).Equals(AccessTools.Method(typeof(PlayData), nameof(PlayData.GetEquipRandom)))
+                        && restoreUncommonRewards.Value)
+                    {
+                        yield return new CodeInstruction(OpCodes.Ldc_I4_2);
+                    }
+                    else if (ci.opcode == OpCodes.Ldc_I4 && list[Math.Max(i - 1, 0)].opcode == OpCodes.Ldsfld 
+                        && ((FieldInfo)list[Math.Max(i - 1, 0)].operand).Equals(AccessTools.Field(typeof(GDEItemKeys), nameof(GDEItemKeys.Item_Misc_Gold))))
+                    {
+                        vanillaGoldReward = (int)ci.operand;
+                        yield return ci;
+                        
+                    }
+                    else
+                    {
+                        yield return ci;
+                    }
+                    i++;
                 }
             }
         }

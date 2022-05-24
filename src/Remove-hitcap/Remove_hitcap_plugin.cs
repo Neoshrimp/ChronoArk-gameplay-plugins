@@ -68,19 +68,19 @@ namespace Remove_hitcap
             }
         }
 
+
+        // game needs to be reloaded for patch to take effect 
         [HarmonyPatch(typeof(PartyInventory), "Awake")]
         class ExpertIconPatch
         {
             static void Postfix(PartyInventory __instance)
             {
-
                 if (__instance.ExpertIcon != null)
                 {
-
                     SimpleTooltip tooltip = __instance.ExpertIcon.GetComponent<SimpleTooltip>();
                     if (tooltip != null)
                     {
-                        tooltip.TooltipString = ProcessTooltip(tooltip.ToolTipString_l2);
+                        tooltip.TooltipString = ProcessTooltip(tooltip.ToolTipString_l2.ToString());
                         tooltip.ToolTipString_l2 = null;
                     }
 
@@ -105,7 +105,7 @@ namespace Remove_hitcap
                 foreach (CodeInstruction i in instructions)
                 {
                     //maybe there's a better way for detecting this
-                    if (i.opcode == OpCodes.Ldc_R4 && i.operand.ToString() == "98" && changeCount < changeLim)
+                    if (i.opcode == OpCodes.Ldc_R4 && (float)i.operand == 98f && changeCount < changeLim)
                     {
                         yield return new CodeInstruction(OpCodes.Ldc_R4, 100f);
                         changeCount += 1;

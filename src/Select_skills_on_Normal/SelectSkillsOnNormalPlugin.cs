@@ -11,7 +11,7 @@ using System.Reflection.Emit;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace Select_skills_on_Normal
+namespace ThreeTurnTfk
 {
     [BepInPlugin(GUID, "Skill select on Normal difficulty", version)]
     [BepInProcess("ChronoArk.exe")]

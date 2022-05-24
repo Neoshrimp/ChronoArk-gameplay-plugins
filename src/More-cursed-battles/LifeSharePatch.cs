@@ -38,7 +38,7 @@ namespace More_cursed_battles
                         {
                             if (battleEnemy.BuffFind(GDEItemKeys.Buff_P_Guard_LifeShare, false))
                             {
-                                battleEnemy.BuffReturn(GDEItemKeys.Buff_P_Guard_LifeShare).PlusStat.maxhp += avgMaxHp - battleEnemy.Info.get_stat.maxhp;
+                                battleEnemy.BuffReturn(GDEItemKeys.Buff_P_Guard_LifeShare).PlusStat.maxhp = avgMaxHp - battleEnemy.Info.get_stat.maxhp;
                             }
                         }
                     }

@@ -36,34 +36,27 @@ namespace Lift_Curse_Card_placement
         {
             [HarmonyPatch(nameof(BattleTeam.MyTurn))]
             [HarmonyPostfix]
-            static void MyTurnPostfix()
+            static void MyTurnPostfix(BattleTeam __instance)
             {
                 if (BattleSystem.instance != null)
                 {
                     if (BattleSystem.instance.TurnNum == 0)
                     {
-                        // copied from S_TW_Red_6 (Helia's dark sun skill)
-                        IEnumerator Insert(Skill Temp)
-                        {
-                            if (BattleSystem.instance.AllyTeam.Skills.Remove(Temp))
-                            {
-                                yield return BattleSystem.instance.ActAfter();
-                                BattleSystem.instance.AllyTeam.Add(Temp, true);
-                            }
-                            yield break;
-                        }
 
-                        Skill temp = BattleSystem.instance.AllyTeam.Skills.Find(x => x.MySkill.KeyID == GDEItemKeys.Skill_S_UnCurse);
-                        if (temp != null)
-                        {
-                            BattleSystem.DelayInput(Insert(temp));
-                        }
+                        Skill unCurseCard = BattleSystem.instance.AllyTeam.Skills.Find(x => x.MySkill.KeyID == GDEItemKeys.Skill_S_UnCurse);
 
+                        if (BattleSystem.instance.AllyTeam.Skills.Remove(unCurseCard))
+                        {
+
+                            // in reality there should be a separate function for moving a card
+                            BattleSystem.instance.AllyTeam.Add(unCurseCard, true);
+                        }
 
                     }
                 }
             }
         }
+
 
 
     }

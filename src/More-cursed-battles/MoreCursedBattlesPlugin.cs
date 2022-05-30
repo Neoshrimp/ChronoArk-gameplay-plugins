@@ -33,6 +33,7 @@ namespace More_cursed_battles
         private static ConfigEntry<bool> betterCursedRewardsInSanctuary;
         private static ConfigEntry<bool> betterCursedRewardsInCW;
         private static ConfigEntry<bool> restoreUncommonRewards;
+        private static ConfigEntry<bool> cwMiniBossCurseChance;
 
 
 
@@ -44,6 +45,8 @@ namespace More_cursed_battles
             cursedBattleNumberConf = Config.Bind("Generation config", "number_of_cursed_battles_per_stage", 2, "Additional cursed battles for each stage. Set to 4 to curse all non-boss battles on every stage.");
             enabledInSanctuary = Config.Bind("Generation config", "cursed_battles_in_Sanctuary", true, "Enables/Disables cursed fight generation in the final area. (acceptable values: true/false)");
             enabledInCW = Config.Bind("Generation config", "cursed_battles_in_Crimson_Wilderness", true, "Enables/Disables cursed fight generation in Crimson Wilderness. (acceptable values: true/false)");
+            cwMiniBossCurseChance = Config.Bind("Generation config", "exclusive_curse_miniBosses_in_Crimson_Wilderness", true, "In Crimson Wilderness cursed fights the cursed mob will always be a miniboss. Else cursed mob is random (acceptable values: true/false)");
+
 
             startingLiftingAmountConf = Config.Bind("Item config", "starting_lifting_scroll_amount", 2, "Amount of starting lifting scrolls. Lifting scrolls are identified. Mind that 1-2 cursed fights no longer drop lifting scrolls.");
             cursedGoldReward = Config.Bind("Item config", "cursed_gold_reward", 100, "Sets the amount of gold commonly rewarded by killing cursed enemies. Vanilla amount is 200.");
@@ -60,10 +63,9 @@ namespace More_cursed_battles
         }
 
         //TODO
-        //add 
+        //add limited lifting mode
 
         //loading removes original red particles
-        //check cursed deathbringer. checked. it's kinda bs
         //cursed lightning hedgehogs produces exception
 
 
@@ -195,7 +197,7 @@ namespace More_cursed_battles
             static void Postfix(MiniHex __instance)
             {
                 MapTile mt = __instance.MyTile;
-                if (mt != null && __instance.Cursed != null && 
+                if (mt != null && __instance.Cursed != null &&
                     (mt.Info.Type is Monster || (mt.TileEventObject != null && mt.TileEventObject.ObjectData != null && mt.TileEventObject.Monster)))
                 {
                     if (!ogCursedTiles.Contains(mt))
@@ -254,6 +256,46 @@ namespace More_cursed_battles
                     }
                 }
 
+                if (betterCursedRewardsInCW.Value && PlayData.TSavedata.NowStageMapKey == GDEItemKeys.Stage_Stage_Crimson)
+                {
+
+                    var cwConsumables = new List<string> { GDEItemKeys.Item_Consume_RedHammer, GDEItemKeys.Item_Consume_Dinner, 
+                        GDEItemKeys.Item_Consume_RedWing, GDEItemKeys.Item_Consume_RedHerb };
+
+                    if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_SR_Samurai || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_SR_Gunner
+                        || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_SR_Tumbledochi)
+                    {
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == vanillaGoldReward);
+                        if (Misc.RandomPer(100, 80))
+                        {
+                            ___Itemviews.AddRange(InventoryManager.RewardKey(GDEItemKeys.Reward_R_GetPotion, false));
+                        }
+                        else
+                        {
+                            ___Itemviews.Add(ItemBase.GetItem(cwConsumables.Random()));
+                        }
+                    }
+                    if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_SR_GuitarList)
+                    {
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == vanillaGoldReward);
+                        ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(3)));
+                    }
+                    if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_SR_Shotgun || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_SR_Sniper)
+                    {
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == vanillaGoldReward);
+                        ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(3)));
+                        ___Itemviews.Add(ItemBase.GetItem(cwConsumables.Random()));
+
+                    }
+                    if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_SR_Outlaw || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_SR_Blade)
+                    {
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == vanillaGoldReward);
+                        ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(4)));
+                        ___Itemviews.Add(ItemBase.GetItem(cwConsumables.Random()));
+                    }
+
+                }
+
                 if (___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold && x.StackCount == vanillaGoldReward) > 0)
                     addGold(cursedGoldReward.Value);
 
@@ -274,18 +316,18 @@ namespace More_cursed_battles
                 foreach (var ci in instructions)
                 {
                     if (ci.opcode == OpCodes.Ldc_I4_1
-                        && list[Math.Min(i+1, c-1)].opcode == OpCodes.Call
+                        && list[Math.Min(i + 1, c - 1)].opcode == OpCodes.Call
                         && ((MethodInfo)list[Math.Min(i + 1, c - 1)].operand).Equals(AccessTools.Method(typeof(PlayData), nameof(PlayData.GetEquipRandom)))
                         && restoreUncommonRewards.Value)
                     {
                         yield return new CodeInstruction(OpCodes.Ldc_I4_2);
                     }
-                    else if (ci.opcode == OpCodes.Ldc_I4 && list[Math.Max(i - 1, 0)].opcode == OpCodes.Ldsfld 
+                    else if (ci.opcode == OpCodes.Ldc_I4 && list[Math.Max(i - 1, 0)].opcode == OpCodes.Ldsfld
                         && ((FieldInfo)list[Math.Max(i - 1, 0)].operand).Equals(AccessTools.Field(typeof(GDEItemKeys), nameof(GDEItemKeys.Item_Misc_Gold))))
                     {
                         vanillaGoldReward = (int)ci.operand;
                         yield return ci;
-                        
+
                     }
                     else
                     {
@@ -295,6 +337,56 @@ namespace More_cursed_battles
                 }
             }
         }
+
+        [HarmonyPatch(typeof(BattleSystem), nameof(BattleSystem.CurseEnemySelect))]
+
+        class CurseCWminiBosses
+        {
+            // cursed enemy select per wave
+            static void Postfix(ref string __result, List<GDEEnemyData> Enemydatas, BattleSystem __instance)
+            {
+                var cwMiniBosses = new HashSet<string>() { GDEItemKeys.Enemy_SR_GuitarList, GDEItemKeys.Enemy_SR_Shotgun, GDEItemKeys.Enemy_SR_Blade, GDEItemKeys.Enemy_SR_Outlaw, GDEItemKeys.Enemy_SR_Sniper};
+                var mbList = Enemydatas.FindAll(data => cwMiniBosses.Contains(data.Key));
+                if (mbList.Count > 0 && cwMiniBossCurseChance.Value)
+                {
+                    __result = mbList.Random().Key;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(BattleSystem), nameof(BattleSystem.CreatEnemy))]
+        class RemoveBrokenCWcombos
+        {
+            static void CheckCurse(List<string> curseList, string curseKey, string enemyKey)
+            {
+                if (curseKey == GDEItemKeys.Buff_B_CursedMob_2 && enemyKey == GDEItemKeys.Enemy_SR_Outlaw)
+                    return;
+                curseList.Add(curseKey);
+            }
+            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+            {
+                var i = 0;
+                var list = instructions.ToList();
+                var c = list.Count;
+                foreach (var ci in instructions)
+                {
+                    if (ci.opcode == OpCodes.Callvirt && ((MethodInfo)ci.operand).Equals(AccessTools.Method(typeof(List<string>), "Add"))
+                        && list[Math.Max(i-2, 0)].opcode == OpCodes.Ldloc_3)
+                    {
+                        yield return new CodeInstruction(OpCodes.Ldarg_1);
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(RemoveBrokenCWcombos), nameof(RemoveBrokenCWcombos.CheckCurse)));
+                    }
+                    else
+                    {
+                        yield return ci;
+                    }
+                    i++;
+                }
+            }
+
+
+        }
+
 
 
     }

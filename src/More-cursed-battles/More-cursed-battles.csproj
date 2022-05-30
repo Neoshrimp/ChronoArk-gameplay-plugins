@@ -68,6 +68,7 @@
     <Compile Include="LifeSharePatch.cs" />
     <Compile Include="MoreCursedBattlesPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UncurseBacklinersPatch.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

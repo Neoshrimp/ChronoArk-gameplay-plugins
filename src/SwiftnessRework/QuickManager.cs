@@ -30,8 +30,8 @@ namespace SwiftnessRework
 
         public void AddField(object inst, bool val)
         {
-            if(!quickDic.ContainsKey(inst.GetHashCode()))
-            { 
+            if (!quickDic.ContainsKey(inst.GetHashCode()))
+            {
                 quickDic.Add(inst.GetHashCode(), new QuickBool() { weakRef = new WeakReference(inst, false), Bool = val });
             }
 

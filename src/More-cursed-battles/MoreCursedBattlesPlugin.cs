@@ -61,14 +61,6 @@ namespace More_cursed_battles
 
             logger = Logger;
 
-            var meth = AccessTools.Method(typeof(System.IO.Directory), nameof(System.IO.Directory.GetFiles), new Type[] { typeof(string), typeof(string), typeof(System.IO.SearchOption) });
-            var meth2 = AccessTools.Method(typeof(System.Linq.Enumerable), nameof(System.Linq.Enumerable.ToList));
-
-            Debug.Log(meth);
-            Debug.Log(meth2);
-
-
-
             harmony.PatchAll();
         }
         void OnDestroy()
@@ -89,16 +81,17 @@ namespace More_cursed_battles
 
 
 
+
         // add starting lifting scrolls
-        [HarmonyPatch(typeof(FieldSystem))]
+        [HarmonyPatch(typeof(FieldSystem), nameof(FieldSystem.StageStart))]
         class FieldSystem_Patch
         {
-            [HarmonyPatch(nameof(FieldSystem.StageStart))]
-            [HarmonyPrefix]
-            static void StageStartPrefix()
+            [HarmonyPostfix]
+            static void AddStartingItems()
             {
                 // copied from FieldSystem.StageStart
-                if (PlayData.TSavedata.StageNum == 0 && !PlayData.TSavedata.GameStarted)
+                // !PlayData.TSavedata.GameStarted
+                if (PlayData.TSavedata.StageNum == 0 && !PlayData.TSavedata.IsLoaded)
                 {
                     if (!limitedUncurse.Value)
                     {
@@ -116,6 +109,27 @@ namespace More_cursed_battles
                     }
                 }
             }
+
+
+            //[HarmonyPatch()]
+            static IEnumerable<CodeInstruction> AddItemsTranspiler(IEnumerable<CodeInstruction> instructions)
+            {
+                foreach (var ci in instructions)
+                {
+                    if (ci.Is(OpCodes.Callvirt, AccessTools.Method(typeof(UIManager), "FadeSquare_In")))
+                    {
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(FieldSystem_Patch), nameof(FieldSystem_Patch.AddStartingItems)));
+                        yield return ci;
+                    }
+                    else
+                    {
+                        yield return ci;
+                    }
+                }
+            }
+
+
+
 
         }
 

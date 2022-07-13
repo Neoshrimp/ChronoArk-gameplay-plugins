@@ -26,6 +26,28 @@ namespace Alternative_ShadowCurtain
         }
 
 
+
+
+
+        [HarmonyPatch(typeof(GDESkillData), nameof(GDESkillData.LoadFromDict))]
+        class GDESkillData_Patch
+        {
+            static void Postfix(GDESkillData __instance, Dictionary<string, object> dict)
+            {
+                // shadowCurtain
+                if (__instance.Key == GDEItemKeys.Skill_S_Trisha_5)
+                {
+                    __instance.Disposable = true;
+                    __instance.NoBasicSkill = false;
+                    __instance.SKillExtendedItem = new List<GDESkillExtendedData>() { };
+                }
+            }
+        }
+
+
+
+
+
         // TODO
         // Update db if card is unlocked mid-run. Unlikely to be noticed or significantly affect gameplay. Or figure unified way to add/patch cards.
 
@@ -33,7 +55,9 @@ namespace Alternative_ShadowCurtain
         // important things to update properly are keywords, mana cost, regular/red skill etc. However, some other changes might be required for skill to be properly integrated.
         // Encyclopedia entries mana cost is still not updated properly even with this addition
         // as far as I know PlayData.DataBaseInit is only called once when game is started from main menu
-        [HarmonyPatch(typeof(PlayData), nameof(PlayData.DataBaseInit))]
+
+        // legacy
+/*        [HarmonyPatch(typeof(PlayData), nameof(PlayData.DataBaseInit))]
         class DataBase_Patch
         {
             static void Postfix(List<GDESkillData> ____ALLSKILLLIST)
@@ -43,17 +67,19 @@ namespace Alternative_ShadowCurtain
                 {
                     shadowCurtain.NoBasicSkill = false;
                     shadowCurtain.Disposable = true;
+
                 }
             }
-        }
+        }*/
 
-
+        
 
         [HarmonyPatch(typeof(S_Trisha_5))]
         class Shadow_Curtain_Patch
         {
-            [HarmonyPatch(nameof(S_Trisha_5.Init))]
-            [HarmonyPrefix]
+            // legacy
+/*            [HarmonyPatch(nameof(S_Trisha_5.Init))]
+            [HarmonyPrefix]*/
             static void InitPrefix(Skill ___MySkill)
             {
                 // once keyword
@@ -76,14 +102,16 @@ namespace Alternative_ShadowCurtain
             [HarmonyPostfix]
             static void DescExtendedPostfix(ref string __result)
             {
-                __result = __result.Replace("<b>Exclude after being used 3 times</b>\n", "");
+                __result = __result.Replace("<b>Exclude after 3 uses</b>\n", "");
             }
         }
 
 
         // removes remaining curtain use count icon and logic
         // each Skill has a List of Skill_Extended which add additional effects or provide card buff/debuffs (i.e. Azar's passive)
-        [HarmonyPatch(typeof(Trisha_5_Ex))]
+
+        // legacy
+        //[HarmonyPatch(typeof(Trisha_5_Ex))]
         class Shadow_Curtain_ExtendedIcon_Patch
         {
             [HarmonyPatch(nameof(Trisha_5_Ex.Init))]

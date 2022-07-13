@@ -10,7 +10,9 @@ using System.Reflection;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace Select_skills_on_Normal
+
+//2do. add extra turn
+namespace ThreeTurnTfk
 {
     [BepInPlugin(GUID, "3 turn TFK", version)]
     [BepInProcess("ChronoArk.exe")]

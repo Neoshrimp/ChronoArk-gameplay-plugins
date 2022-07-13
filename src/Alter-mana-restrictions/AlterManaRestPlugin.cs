@@ -27,7 +27,7 @@ namespace Alter_mana_restrictions
         private static int firstRest;
         private static int secondRest;
 
-        private static ConfigFile configFile = new ConfigFile(Path.Combine(Paths.ConfigPath, "neo." + "org.neo.gameplay.moremana".Split('.').Last() + ".cfg"), true);
+        private static ConfigFile configFile = new ConfigFile(Path.Combine(Paths.ConfigPath, "neo." + GUID.Split('.').Last() + ".cfg"), true);
         private static ConfigEntry<int> firstManaRestriction;
         private static ConfigEntry<int> secondManaRestriction;
 
@@ -39,7 +39,7 @@ namespace Alter_mana_restrictions
         void Awake()
         {
 
-            firstManaRestriction = configFile.Bind("Restriction config", "first restriction mana value", -1, "Mana value where 3 characters at level 2+ restriction will be applied. Example, setting to 3 won't allow any mana level ups until each of the 3 characters reach level 2. Set below 3 to disable");
+            firstManaRestriction = configFile.Bind("Restriction config", "first restriction mana value", -1, "Mana value where 3 characters at level 2+ restriction will be applied. Example, setting to 3 won't allow any mana level ups until each of the 3 characters reaches level 2. Set below 3 to disable");
             secondManaRestriction = configFile.Bind("Restriction config", "second restriction mana value", -1, "Mana value where 4 characters at level 3+ restriction will be applied. Set below 3 to disable. Should be higher than first restriction unless disabled");
 
             firstRest = Mathf.Max(firstManaRestriction.Value - 3, -1);
@@ -60,7 +60,7 @@ namespace Alter_mana_restrictions
             if (harmony != null)
                 harmony.UnpatchAll(GUID);
         }
-\
+
 
         static void setTooltips()
         {

@@ -11,6 +11,7 @@ using System.Linq;
 using Debug = UnityEngine.Debug;
 using DarkTonic.MasterAudio;
 using System.Reflection.Emit;
+using System;
 
 namespace SwiftnessRework
 {
@@ -27,7 +28,7 @@ namespace SwiftnessRework
 
 		private static BepInEx.Logging.ManualLogSource logger;
 
-		static QuickManager quickManager;
+		public static QuickManager quickManager;
 
 		void Awake()
 		{
@@ -46,8 +47,10 @@ namespace SwiftnessRework
 
 			quickManager = new QuickManager(defaultQuickness);
 			harmony.PatchAll();
-
 			StartCoroutine(CleanFields());
+
+			//var deez = (Skill_Extended)Activator.CreateInstance(typeof(Extended_Azar_1));
+
 		}
 		void OnDestroy()
 		{
@@ -91,22 +94,27 @@ namespace SwiftnessRework
 				yield return AccessTools.GetDeclaredConstructors(typeof(Skill_Extended))[0];
 			}
 
-			static void Postfix(Skill __instance)
+			static void Postfix(Skill_Extended __instance)
 			{
 				quickManager.AddField(__instance, false);
+				//Debug.Log(__instance.GetType().Name);
 			}
 		}
 
-		[HarmonyPatch(typeof(Skill), nameof(Skill.initField))]
+       
+
+
+
+
+
+
+        [HarmonyPatch(typeof(Skill), nameof(Skill.initField))]
 		class SkillinitFieldPatch
 		{
 			static void Postfix(Skill __instance)
 			{
 				if (quickManager.defaultQuickness.Contains(__instance.MySkill.KeyID))
 				{
-					Debug.Log(__instance.MySkill.Key);
-					Debug.Log(__instance.MySkill.KeyID);
-
 					quickManager.SetVal(__instance, true);
 				}
 			}
@@ -120,103 +128,11 @@ namespace SwiftnessRework
 
 				}*/
 			
-		static bool CheckQuick(Skill skill)
-		{
-			Debug.Log($"Quick: {quickManager.SkillGetQuick(skill)}");
-			return quickManager.SkillGetQuick(skill);
-		}
-
-		[HarmonyPatch]
-		class CheckQuickPatch
-		{
 
 
-			static IEnumerable<MethodBase> TargetMethods()
-			{
-				yield return AccessTools.Method(typeof(BattleActWindow), nameof(BattleActWindow.CountSkillPointEnter));
-				yield return AccessTools.Method(typeof(BattleSystem), nameof(BattleSystem.CastEnqueue));
-
-			}
-
-			static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-			{
-				int i = 0;
-				var ciList = instructions.ToList();
-				var c = ciList.Count();
-				foreach (var ci in instructions)
-				{
-					if (ci.Is(OpCodes.Callvirt, AccessTools.Method(typeof(Skill), "get_NotCount")))
-					{
-						Debug.Log("deez");
-						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SwiftnessReworkPlugin), nameof(SwiftnessReworkPlugin.CheckQuick)));
-					}
-					else
-					{
-						yield return ci;
-					}
-					i++;
-				}
-			}
-		}
-
-
-		[HarmonyDebug]
-        [HarmonyPatch(typeof(BattleAlly), nameof(BattleAlly.UseSkillAfter))]
-        class Swiftness2IgnoreOverlaodPatch
-        {
-
-			static void IcreaseOverload(Skill skill, BattleAlly ally)
-			{
-				if (!skill.NotCount && !skill.IsNowCasting && SaveManager.NowData.GameOptions.Difficulty != 1)
-				{
-					ally.Overload++;
-				}
-			}
-
-			static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-			{
-				int i = 0;
-				var ciList = instructions.ToList();
-				var c = ciList.Count();
-
-				bool notCountInject = false;
-				foreach (var ci in instructions)
-				{
-					if (ci.Is(OpCodes.Callvirt, AccessTools.Method(typeof(Skill), "get_NotCount")))
-					{
-						Debug.Log("deez2");
-						notCountInject = true;
-
-						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SwiftnessReworkPlugin), nameof(SwiftnessReworkPlugin.CheckQuick)));
-					}
-					else if (ci.Is(OpCodes.Callvirt, AccessTools.Method(typeof(BattleChar), "set_Overload")) && notCountInject)
-					{
-						Debug.Log("deez3");
-
-						yield return new CodeInstruction(OpCodes.Pop);
-						yield return new CodeInstruction(OpCodes.Pop);
-					}
-					else if (ci.Is(OpCodes.Ldfld, AccessTools.Field(typeof(Skill), nameof(Skill.BasicSkill))))
-					{
-						Debug.Log("deez4");
-
-						yield return new CodeInstruction(OpCodes.Dup);
-						yield return new CodeInstruction(OpCodes.Ldarg_0);
-						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Swiftness2IgnoreOverlaodPatch), 
-							nameof(Swiftness2IgnoreOverlaodPatch.IcreaseOverload)));
-						yield return ci;
-					}
-					else
-					{
-						yield return ci;
-					}
-					i++;
-				}
-			}
-		}
+		
 
 
 
-        //[HarmonyPatch(typeof(SkillButton), nameof(SkillButton.ChoiceSkill))] quick
     }
 }

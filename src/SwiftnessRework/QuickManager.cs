@@ -13,7 +13,7 @@ using System;
 
 namespace SwiftnessRework
 {
-    class QuickManager
+    public class QuickManager
     {
 
 
@@ -45,8 +45,7 @@ namespace SwiftnessRework
             }
             else
             {
-                UnityEngine.Debug.Log("no value");
-                throw new Exception();
+                throw new Exception($"GetVal: no entry with {inst.GetHashCode()} hashcode (object: {inst})");
             }
         }
 
@@ -59,8 +58,7 @@ namespace SwiftnessRework
             }
             else
             {
-                UnityEngine.Debug.Log("no value to set");
-                throw new Exception();
+                throw new Exception($"SetVal: no entry with {inst.GetHashCode()} hashcode (object: {inst})");
             }
         }
 
@@ -91,7 +89,6 @@ namespace SwiftnessRework
         {
 
 
-            //defaultQuickness.Add(GDEItemKeys.Skill_S_Mement_P);
 
             Debug.Log("quickDic size: " + quickDic.Count);
             foreach (var kv in quickDic.ToArray())

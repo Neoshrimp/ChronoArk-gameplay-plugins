@@ -41,6 +41,9 @@ namespace SwiftnessRework
 			defaultQuickness.Add(GDEItemKeys.Skill_S_Azar_2);
 			defaultQuickness.Add(GDEItemKeys.Skill_S_Azar_11);
 
+			defaultQuickness.Add(GDEItemKeys.Skill_S_Mement_P);
+
+
 			quickManager = new QuickManager(defaultQuickness);
 			harmony.PatchAll();
 
@@ -70,28 +73,13 @@ namespace SwiftnessRework
 		{
 			static IEnumerable<MethodBase> TargetMethods()
 			{
-				//Debug.Log(AccessTools.GetDeclaredConstructors(typeof(Skill))[0]);
 				yield return AccessTools.GetDeclaredConstructors(typeof(Skill))[0];
 			}
 
 			static void Postfix(Skill __instance)
 			{
 
-				//AddField(__instance, true);
-				// doesnt have key yet
 				quickManager.AddField(__instance, false);
-			}
-		}
-
-		[HarmonyPatch(typeof(Skill), nameof(Skill.initField))]
-		class SkillinitFieldPatch
-		{
-			static void Postfix(Skill __instance)
-			{
-				if (quickManager.defaultQuickness.Contains(__instance.MySkill.Key) || quickManager.defaultQuickness.Contains(__instance.MySkill.KeyID))
-				{
-					quickManager.AddField(__instance, true);
-				}
 			}
 		}
 
@@ -100,7 +88,6 @@ namespace SwiftnessRework
 		{
 			static IEnumerable<MethodBase> TargetMethods()
 			{
-				//Debug.Log(AccessTools.GetDeclaredConstructors(typeof(Skill))[0]);
 				yield return AccessTools.GetDeclaredConstructors(typeof(Skill_Extended))[0];
 			}
 
@@ -110,26 +97,43 @@ namespace SwiftnessRework
 			}
 		}
 
+		[HarmonyPatch(typeof(Skill), nameof(Skill.initField))]
+		class SkillinitFieldPatch
+		{
+			static void Postfix(Skill __instance)
+			{
+				if (quickManager.defaultQuickness.Contains(__instance.MySkill.KeyID))
+				{
+					Debug.Log(__instance.MySkill.Key);
+					Debug.Log(__instance.MySkill.KeyID);
+
+					quickManager.SetVal(__instance, true);
+				}
+			}
+		}
+
+
+
 		/*        [HarmonyPatch(typeof(Skill), nameof(Skill.CloneSkill)]
 				class Skill_ClonePatch
 				{
 
 				}*/
-
+			
 		static bool CheckQuick(Skill skill)
 		{
+			Debug.Log($"Quick: {quickManager.SkillGetQuick(skill)}");
 			return quickManager.SkillGetQuick(skill);
 		}
 
 		[HarmonyPatch]
-		class BattleActWindow_CountSkillPointEntePatch
+		class CheckQuickPatch
 		{
 
 
 			static IEnumerable<MethodBase> TargetMethods()
 			{
 				yield return AccessTools.Method(typeof(BattleActWindow), nameof(BattleActWindow.CountSkillPointEnter));
-				yield return AccessTools.Method(typeof(BattleAlly), nameof(BattleAlly.UseSkillAfter));
 				yield return AccessTools.Method(typeof(BattleSystem), nameof(BattleSystem.CastEnqueue));
 
 			}
@@ -153,11 +157,66 @@ namespace SwiftnessRework
 					i++;
 				}
 			}
-
-
-
-			//[HarmonyPatch(typeof(SkillButton), nameof(SkillButton.ChoiceSkill))] quick
-
 		}
-	}
+
+
+		[HarmonyDebug]
+        [HarmonyPatch(typeof(BattleAlly), nameof(BattleAlly.UseSkillAfter))]
+        class Swiftness2IgnoreOverlaodPatch
+        {
+
+			static void IcreaseOverload(Skill skill, BattleAlly ally)
+			{
+				if (!skill.NotCount && !skill.IsNowCasting && SaveManager.NowData.GameOptions.Difficulty != 1)
+				{
+					ally.Overload++;
+				}
+			}
+
+			static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+			{
+				int i = 0;
+				var ciList = instructions.ToList();
+				var c = ciList.Count();
+
+				bool notCountInject = false;
+				foreach (var ci in instructions)
+				{
+					if (ci.Is(OpCodes.Callvirt, AccessTools.Method(typeof(Skill), "get_NotCount")))
+					{
+						Debug.Log("deez2");
+						notCountInject = true;
+
+						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SwiftnessReworkPlugin), nameof(SwiftnessReworkPlugin.CheckQuick)));
+					}
+					else if (ci.Is(OpCodes.Callvirt, AccessTools.Method(typeof(BattleChar), "set_Overload")) && notCountInject)
+					{
+						Debug.Log("deez3");
+
+						yield return new CodeInstruction(OpCodes.Pop);
+						yield return new CodeInstruction(OpCodes.Pop);
+					}
+					else if (ci.Is(OpCodes.Ldfld, AccessTools.Field(typeof(Skill), nameof(Skill.BasicSkill))))
+					{
+						Debug.Log("deez4");
+
+						yield return new CodeInstruction(OpCodes.Dup);
+						yield return new CodeInstruction(OpCodes.Ldarg_0);
+						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Swiftness2IgnoreOverlaodPatch), 
+							nameof(Swiftness2IgnoreOverlaodPatch.IcreaseOverload)));
+						yield return ci;
+					}
+					else
+					{
+						yield return ci;
+					}
+					i++;
+				}
+			}
+		}
+
+
+
+        //[HarmonyPatch(typeof(SkillButton), nameof(SkillButton.ChoiceSkill))] quick
+    }
 }

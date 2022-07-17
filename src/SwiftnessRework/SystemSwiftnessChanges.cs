@@ -18,11 +18,11 @@ namespace SwiftnessRework
     class SystemSwiftnessChanges
     {
 
-		static QuickManager quickManager = SwiftnessReworkPlugin.quickManager;
+		//static SwiftnessReworkPlugin.quickManager SwiftnessReworkPlugin.quickManager = SwiftnessReworkPlugin.SwiftnessReworkPlugin.quickManager;
 
 		static bool CheckQuick(Skill skill)
 		{
-			return quickManager.SkillGetQuick(skill);
+			return SwiftnessReworkPlugin.quickManager.SkillGetQuick(skill);
 		}
 
 		[HarmonyPatch]
@@ -31,7 +31,7 @@ namespace SwiftnessRework
 
 			static bool CheckSwift(Skill skill)
 			{
-				return quickManager.SkillGetQuick(skill) && skill.NotCount;
+				return SwiftnessReworkPlugin.quickManager.SkillGetQuick(skill) && skill.NotCount;
 			}
 
 			static IEnumerable<MethodBase> TargetMethods()
@@ -63,15 +63,42 @@ namespace SwiftnessRework
 		}
 
 
-		[HarmonyPatch(typeof(SkillButton), nameof(SkillButton.ChoiceSkill))]
+
+        [HarmonyPatch(typeof(SKillCollection), "SkillAdd")]
+        class SKillCollection_Patch
+        {
+			static bool EncyclopediaCheckSwift(GDESkillData skillData)
+			{
+				return skillData.NotCount && SwiftnessReworkPlugin.quickManager.defaultQuickness.Contains(skillData.KeyID);
+			}
+
+			static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+			{
+				foreach (var ci in instructions)
+				{
+					if (ci.Is(OpCodes.Callvirt, AccessTools.Method(typeof(GDESkillData), "get_NotCount")))
+					{
+						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SKillCollection_Patch), nameof(SKillCollection_Patch.EncyclopediaCheckSwift)));
+					}
+					else
+					{
+						yield return ci;
+					}
+				}
+			}
+		}
+
+
+
+        [HarmonyPatch(typeof(SkillButton), nameof(SkillButton.ChoiceSkill))]
 		class SkillButton_Patch
 		{
 
 			static void AssignQuick(Skill skill)
 			{
-				if (quickManager.GetVal(BattleSystem.instance.SelectedSkill))
+				if (SwiftnessReworkPlugin.quickManager.SkillGetQuick(BattleSystem.instance.SelectedSkill))
 				{
-					quickManager.SetVal(skill, true);
+					SwiftnessReworkPlugin.quickManager.SetVal(skill, true);
 				}
 			}
 
@@ -112,9 +139,6 @@ namespace SwiftnessRework
 
 			static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
 			{
-				int i = 0;
-				var ciList = instructions.ToList();
-				var c = ciList.Count();
 				foreach (var ci in instructions)
 				{
 					if (ci.Is(OpCodes.Callvirt, AccessTools.Method(typeof(Skill), "get_NotCount")))
@@ -125,14 +149,13 @@ namespace SwiftnessRework
 					{
 						yield return ci;
 					}
-					i++;
 				}
 			}
 		}
 
 
 		[HarmonyPatch(typeof(BattleAlly), nameof(BattleAlly.UseSkillAfter))]
-		class Swiftness2IgnoreOverlaodPatch
+		class Swiftness2IgnoreOverloadPatch
 		{
 
 			static void IcreaseOverload(Skill skill, BattleAlly ally)
@@ -168,8 +191,8 @@ namespace SwiftnessRework
 					{
 						yield return new CodeInstruction(OpCodes.Dup);
 						yield return new CodeInstruction(OpCodes.Ldarg_0);
-						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Swiftness2IgnoreOverlaodPatch),
-							nameof(Swiftness2IgnoreOverlaodPatch.IcreaseOverload)));
+						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Swiftness2IgnoreOverloadPatch),
+							nameof(Swiftness2IgnoreOverloadPatch.IcreaseOverload)));
 						yield return ci;
 					}
 					else

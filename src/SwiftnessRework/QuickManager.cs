@@ -1,65 +1,32 @@
-﻿using BepInEx;
-using BepInEx.Configuration;
-using GameDataEditor;
-using HarmonyLib;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
-using UnityEngine;
 using System.Linq;
-using Debug = UnityEngine.Debug;
-using System;
+using System.Text;
 
 namespace SwiftnessRework
 {
-    public class QuickManager
+    public class QuickManager : FieldManager<string, bool>
     {
-
-
-        public struct QuickBool
-        {
-            public WeakReference weakRef;
-            public bool Bool;
-        }
-
-        static public Dictionary<int, QuickBool> quickDic = new Dictionary<int, QuickBool>();
 
         public HashSet<string> defaultQuickness;
 
-
-        public void AddField(object inst, bool val)
+        public QuickManager(HashSet<string> defaultQuickness, int cap) : base(cap)
         {
-            if (!quickDic.ContainsKey(inst.GetHashCode()))
-            {
-                quickDic.Add(inst.GetHashCode(), new QuickBool() { weakRef = new WeakReference(inst, false), Bool = val });
-            }
-
+            this.defaultQuickness = defaultQuickness;
         }
 
-        public bool GetVal(object inst)
+        public override string ComputeKey(object inst)
         {
-            if (quickDic.TryGetValue(inst.GetHashCode(), out QuickBool outValue))
+            var key = inst.GetHashCode().ToString();
+            if (inst is Skill skill)
             {
-                return outValue.Bool;
+                key = key + skill.MySkill.Key;
             }
-            else
+            else if (inst is Skill_Extended se)
             {
-                throw new Exception($"GetVal: no entry with {inst.GetHashCode()} hashcode (object: {inst})");
+                key = key + se.GetType().Name;
             }
-        }
-
-        public void SetVal(object inst, bool val)
-        {
-            if (quickDic.TryGetValue(inst.GetHashCode(), out QuickBool outValue))
-            {
-                outValue.Bool = val;
-                quickDic[inst.GetHashCode()] = outValue;
-            }
-            else
-            {
-                throw new Exception($"SetVal: no entry with {inst.GetHashCode()} hashcode (object: {inst})");
-            }
+            return key;
         }
 
         public bool SkillGetQuick(Skill inst)
@@ -70,7 +37,7 @@ namespace SwiftnessRework
             }
             foreach (Skill_Extended se in inst.AllExtendeds)
             {
-                if (GetVal(se))
+                if (ExtendedGetQuick(se))
                 {
                     return true;
                 }
@@ -78,29 +45,10 @@ namespace SwiftnessRework
             return false;
         }
 
-
-        public QuickManager(HashSet<string> defaultQuickness)
+        public bool ExtendedGetQuick(Skill_Extended se)
         {
-            this.defaultQuickness = defaultQuickness;
+            return GetVal(se);
         }
-
-
-        public void CullDestroyed()
-        {
-
-
-
-            Debug.Log("quickDic size: " + quickDic.Count);
-            foreach (var kv in quickDic.ToArray())
-            {
-                if (!kv.Value.weakRef.IsAlive)
-                {
-                    quickDic.Remove(kv.Key);
-                }
-            }
-        }
-
-
 
     }
 }

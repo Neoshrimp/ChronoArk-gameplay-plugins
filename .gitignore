@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /matchIn.txt
 /matchFuzzy.txt
 /create-release.sh
+/src/SwiftnessRework/experimentalFieldManagers

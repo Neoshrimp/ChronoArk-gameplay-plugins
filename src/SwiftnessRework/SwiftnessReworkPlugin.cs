@@ -12,6 +12,8 @@ using Debug = UnityEngine.Debug;
 using DarkTonic.MasterAudio;
 using System.Reflection.Emit;
 using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.Versioning;
 
 namespace SwiftnessRework
 {
@@ -30,9 +32,10 @@ namespace SwiftnessRework
 
 		public static QuickManager quickManager;
 
+		public static Coroutine cullRoutine;
+
 		void Awake()
 		{
-
 			logger = Logger;
 			var defaultQuickness = new HashSet<string>();
 			defaultQuickness.Add(GDEItemKeys.Skill_S_Public_9);
@@ -43,95 +46,30 @@ namespace SwiftnessRework
 			defaultQuickness.Add(GDEItemKeys.Skill_S_Azar_11);
 
 			defaultQuickness.Add(GDEItemKeys.Skill_S_Mement_P);
+			defaultQuickness.Add(GDEItemKeys.Skill_S_MessiahbladesPrototype);
 
-
-			quickManager = new QuickManager(defaultQuickness);
+			quickManager = new QuickManager(defaultQuickness, 10000);
 			harmony.PatchAll();
-			StartCoroutine(CleanFields());
-
-			//var deez = (Skill_Extended)Activator.CreateInstance(typeof(Extended_Azar_1));
+			cullRoutine = StartCoroutine(CleanFields());
+			
 
 		}
 		void OnDestroy()
 		{
+			StopCoroutine(cullRoutine);
 			if (harmony != null)
 				harmony.UnpatchAll(GUID);
 		}
 
-		public static bool cullFields = true;
 
 		IEnumerator CleanFields()
 		{
-			while (cullFields)
+			while (true)
 			{
-				yield return new WaitForSeconds(30);
+				yield return new WaitForSeconds(20);
 				quickManager.CullDestroyed();
 			}
-
 		}
-
-
-		[HarmonyPatch]
-		class SkillConstPatch
-		{
-			static IEnumerable<MethodBase> TargetMethods()
-			{
-				yield return AccessTools.GetDeclaredConstructors(typeof(Skill))[0];
-			}
-
-			static void Postfix(Skill __instance)
-			{
-
-				quickManager.AddField(__instance, false);
-			}
-		}
-
-		[HarmonyPatch]
-		class SkillExtendedConstPatch
-		{
-			static IEnumerable<MethodBase> TargetMethods()
-			{
-				yield return AccessTools.GetDeclaredConstructors(typeof(Skill_Extended))[0];
-			}
-
-			static void Postfix(Skill_Extended __instance)
-			{
-				quickManager.AddField(__instance, false);
-				//Debug.Log(__instance.GetType().Name);
-			}
-		}
-
-       
-
-
-
-
-
-
-        [HarmonyPatch(typeof(Skill), nameof(Skill.initField))]
-		class SkillinitFieldPatch
-		{
-			static void Postfix(Skill __instance)
-			{
-				if (quickManager.defaultQuickness.Contains(__instance.MySkill.KeyID))
-				{
-					quickManager.SetVal(__instance, true);
-				}
-			}
-		}
-
-
-
-		/*        [HarmonyPatch(typeof(Skill), nameof(Skill.CloneSkill)]
-				class Skill_ClonePatch
-				{
-
-				}*/
-			
-
-
-		
-
 
 
     }

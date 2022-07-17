@@ -34,31 +34,6 @@ namespace SwiftnessRework
 		}
 
 
-		//[HarmonyPatch(typeof(Skill_Extended), nameof(Skill_Extended.Init))]
-		class Skill_Extended_Patch
-		{
-			static void Postfix(Skill_Extended __instance)
-			{
-
-				quickManager.AddField(__instance, false);
-			}
-		}
-
-		//[HarmonyPatch]
-		class SkillConstPatch
-		{
-			static IEnumerable<MethodBase> TargetMethods()
-			{
-				yield return AccessTools.GetDeclaredConstructors(typeof(Skill))[0];
-			}
-
-			static void Postfix(Skill __instance)
-			{
-
-				quickManager.AddField(__instance, false);
-			}
-		}
-
 		[HarmonyPatch]
 		class SkillExtendedConstPatch
 		{
@@ -125,10 +100,6 @@ namespace SwiftnessRework
             }
 
 
-/*            static void Postfix(Skill __instance, ref Skill __result)
-			{
-				quickManager.SetVal(__result, quickManager.GetVal(__instance));
-			}*/
         }
 
 

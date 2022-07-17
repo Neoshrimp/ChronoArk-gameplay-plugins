@@ -68,6 +68,7 @@
     <Compile Include="FieldManagementPatches.cs" />
     <Compile Include="FieldManager.cs" />
     <Compile Include="QuickManager.cs" />
+    <Compile Include="Skills2AddQuick.cs" />
     <Compile Include="SwiftnessReworkPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemSwiftnessChanges.cs" />

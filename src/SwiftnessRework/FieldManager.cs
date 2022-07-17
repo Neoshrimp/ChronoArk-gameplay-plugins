@@ -25,6 +25,10 @@ namespace SwiftnessRework
 
         public Dictionary<Tkey, List<RefHolder>> fieldDict;
 
+        // any custom method depending to reduce "key collision"
+        // some value which differentiates the instances in interest but doesn't change through lifetime of the instance
+        // example could be instance.GetType().Name if 
+        // default inst.GetHashCode() could still be good enough in terms of functionality
         public abstract Tkey ComputeKey(object inst);
 
         public FieldManager()
@@ -79,6 +83,8 @@ namespace SwiftnessRework
                 // can target become null at that point?
                 if(refholder.weakRef.Target == null)
                     Debug.Log($"target is null!");
+                // equals might not be correct if it depends on field value or is overridden
+                // maybe RefEquals could work better
                 if (inst.Equals(refholder.weakRef.Target))
                 {
                     eCount++;

@@ -12,17 +12,75 @@ using Debug = UnityEngine.Debug;
 using DarkTonic.MasterAudio;
 using System.Reflection.Emit;
 using System;
+using I2.Loc;
 
 namespace SwiftnessRework
 {
     class SystemSwiftnessChanges
     {
 
-		//static SwiftnessReworkPlugin.quickManager SwiftnessReworkPlugin.quickManager = SwiftnessReworkPlugin.SwiftnessReworkPlugin.quickManager;
+		static QuickManager quickManager = SwiftnessReworkPlugin.quickManager;
 
 		static bool CheckQuick(Skill skill)
 		{
-			return SwiftnessReworkPlugin.quickManager.SkillGetQuick(skill);
+			return quickManager.SkillGetQuick(skill);
+		}
+
+
+
+		// 2do finish
+		/*        [HarmonyPatch]
+				class QuickKeywordPatch
+				{
+
+					static bool CheckQuick1(Skill skill)
+					{
+						return quickManager.SkillGetQuick(skill) || skill.Disposable;
+					}
+
+					static IEnumerable<MethodBase> TargetMethods()
+					{
+						yield return AccessTools.Method(typeof(SkillToolTip), nameof(SkillToolTip.Input));
+					}
+
+					static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+					{
+						int i = 0;
+						var ciList = instructions.ToList();
+						var c = ciList.Count();
+						foreach (var ci in instructions)
+						{
+							if (ci.Is(OpCodes.Callvirt, AccessTools.Method(typeof(Skill), "get_Disposable")) && ciList[Math.Min(i+1, c-1)].opcode == OpCodes.Brtrue)
+							{
+								yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(QuickKeywordPatch), nameof(QuickKeywordPatch.CheckQuick1)));
+							}
+							else
+							else
+							{
+								yield return ci;
+							}
+							i++;
+						}
+					}
+
+				}*/
+
+
+		[HarmonyPatch(typeof(ScriptLocalization))]
+		class Swift2IODesc_Patch
+		{
+
+			[HarmonyPatch("get_Quick"), HarmonyPostfix]
+			static void NamePostfix(ref string __result)
+			{
+				__result = "Ignore Taunt";
+			}
+
+			[HarmonyPatch("get_Quick_Desc"), HarmonyPostfix]
+			static void DescPostfix(ref string __result)
+			{
+				__result = "Does not overload caster.";
+			}
 		}
 
 		[HarmonyPatch]
@@ -31,7 +89,7 @@ namespace SwiftnessRework
 
 			static bool CheckSwift(Skill skill)
 			{
-				return SwiftnessReworkPlugin.quickManager.SkillGetQuick(skill) && skill.NotCount;
+				return quickManager.SkillGetQuick(skill) && skill.NotCount;
 			}
 
 			static IEnumerable<MethodBase> TargetMethods()
@@ -69,7 +127,7 @@ namespace SwiftnessRework
         {
 			static bool EncyclopediaCheckSwift(GDESkillData skillData)
 			{
-				return skillData.NotCount && SwiftnessReworkPlugin.quickManager.defaultQuickness.Contains(skillData.KeyID);
+				return skillData.NotCount && quickManager.defaultQuickness.Contains(skillData.KeyID);
 			}
 
 			static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -96,9 +154,9 @@ namespace SwiftnessRework
 
 			static void AssignQuick(Skill skill)
 			{
-				if (SwiftnessReworkPlugin.quickManager.SkillGetQuick(BattleSystem.instance.SelectedSkill))
+				if (quickManager.SkillGetQuick(BattleSystem.instance.SelectedSkill))
 				{
-					SwiftnessReworkPlugin.quickManager.SetVal(skill, true);
+					quickManager.SetVal(skill, true);
 				}
 			}
 
@@ -128,8 +186,6 @@ namespace SwiftnessRework
 		[HarmonyPatch]
 		class CheckQuickPatch
 		{
-
-
 			static IEnumerable<MethodBase> TargetMethods()
 			{
 				yield return AccessTools.Method(typeof(BattleActWindow), nameof(BattleActWindow.CountSkillPointEnter));
@@ -158,7 +214,7 @@ namespace SwiftnessRework
 		class Swiftness2IgnoreOverloadPatch
 		{
 
-			static void IcreaseOverload(Skill skill, BattleAlly ally)
+			static void IncreaseOverload(Skill skill, BattleAlly ally)
 			{
 				if (!skill.NotCount && !skill.IsNowCasting && SaveManager.NowData.GameOptions.Difficulty != 1)
 				{
@@ -192,7 +248,7 @@ namespace SwiftnessRework
 						yield return new CodeInstruction(OpCodes.Dup);
 						yield return new CodeInstruction(OpCodes.Ldarg_0);
 						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Swiftness2IgnoreOverloadPatch),
-							nameof(Swiftness2IgnoreOverloadPatch.IcreaseOverload)));
+							nameof(Swiftness2IgnoreOverloadPatch.IncreaseOverload)));
 						yield return ci;
 					}
 					else

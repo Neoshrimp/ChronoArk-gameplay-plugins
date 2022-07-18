@@ -40,6 +40,7 @@ namespace SwiftnessRework
 		{
 			logger = Logger;
 
+
 			quickManager = new QuickManager(Skills2AddQuick.defaultQuickness, 10000);
 			harmony.PatchAll();
 			cullRoutine = StartCoroutine(CleanFields());
@@ -47,7 +48,8 @@ namespace SwiftnessRework
 		}
 		void OnDestroy()
 		{
-			StopCoroutine(cullRoutine);
+			if(cullRoutine != null)
+				StopCoroutine(cullRoutine);
 			if (harmony != null)
 				harmony.UnpatchAll(GUID);
 		}

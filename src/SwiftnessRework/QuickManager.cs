@@ -20,7 +20,9 @@ namespace SwiftnessRework
             var key = inst.GetHashCode().ToString();
             if (inst is Skill skill)
             {
-                key = key + skill.MySkill.Key;
+                //key = key + skill.MySkill.Key;
+                key = key + skill.MySkill.KeyID;
+
             }
             else if (inst is Skill_Extended se)
             {

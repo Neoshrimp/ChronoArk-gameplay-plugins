@@ -49,6 +49,7 @@ namespace PlayableLucy
                 if (__instance.Key == GDEItemKeys.Character_LucyC)
                 {
                     __instance.Off = false;
+                    __instance.Text_PharosLeader = new List<string>() { "We're not so different, you and I.", "Perhaps they had a point...", "In the end, does it even matter?" };
                 }
             }
         }

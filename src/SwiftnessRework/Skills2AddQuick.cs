@@ -127,7 +127,6 @@ namespace SwiftnessRework
             GDEItemKeys.Skill_S_Phoenix_8,
             GDEItemKeys.Skill_S_Phoenix_9,
             // iron
-            GDEItemKeys.Skill_S_Prime_6,
             GDEItemKeys.Skill_S_Prime_11,
             GDEItemKeys.Skill_S_Prime_12,
             GDEItemKeys.Skill_S_Prime_4,

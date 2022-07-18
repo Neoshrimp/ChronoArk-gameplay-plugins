@@ -40,15 +40,28 @@ namespace SwiftnessRework
                 if (addQuickSet.Contains(__instance.Key))
                 {
                     dict.TryGetString("Description", out string ogDesc, __instance.Key);
-                    __instance.Description = ogDesc.Replace("Swiftness", "<b>Ignore Overload</b> and <b>Quick</b>");
+                    __instance.Description = ogDesc.Replace("Swiftness", "<b>Agile</b> and <b>Quick</b>");
+                    if (!quickManager.defaultQuickness.Contains(__instance.Key))
+                    {
+                        dict.TryGetCustomList("PlusKeyWords", out List<GDESkillKeywordData> ogKeyWords);
+                        ogKeyWords.Add(new GDESkillKeywordData(SwiftnessReworkPlugin.QuickKeyWordKey));
+                        __instance.PlusKeyWords = ogKeyWords;
+                    }
+
                 }
                 // eve help
                 else if (__instance.Key == GDEItemKeys.Skill_S_Sizz_0)
                 {
                     __instance.Description = @"Transfer all Pincer Attack buffs to the target.
  Create a 1 cost 'Eve, Help!' skill in your hand.
- It gains <b>Ignore Overload</b> and <b>Quick</b>.
+ It gains <b>Agile</b> and <b>Quick</b>.
  The created skill can only be cast this turn.";
+                    if (!quickManager.defaultQuickness.Contains(__instance.Key))
+                    {
+                        dict.TryGetCustomList("PlusKeyWords", out List<GDESkillKeywordData> ogKeyWords);
+                        ogKeyWords.Add(new GDESkillKeywordData(SwiftnessReworkPlugin.QuickKeyWordKey));
+                        __instance.PlusKeyWords = ogKeyWords;
+                    }
                 }
             }
         }
@@ -64,7 +77,7 @@ namespace SwiftnessRework
                 if (__instance.Key == GDEItemKeys.SkillExtended_SkillEn_IlyaPassive)
                 {
                     dict.TryGetString("EnforceString", out string ogEnforceString, __instance.Key);
-                    __instance.EnforceString = ogEnforceString.Replace("Swiftness", "<b>Ignore Overload</b>");
+                    __instance.EnforceString = ogEnforceString.Replace("Swiftness", "<b>Agile</b>");
                 }
             }
         }
@@ -192,7 +205,6 @@ namespace SwiftnessRework
                         //|| ci.Is(OpCodes.Stfld, AccessTools.Field(typeof(Skill_Extended), nameof(Skill_Extended.NotCount)))
                         )
                     {
-                        Debug.Log($"big deez");
                         yield return ci;
                         yield return new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(AdHocSwiftnessChanges), nameof(quickManager)));
                         yield return new CodeInstruction(OpCodes.Ldarg_0);

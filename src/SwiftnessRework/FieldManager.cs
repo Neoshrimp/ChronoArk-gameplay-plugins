@@ -80,11 +80,9 @@ namespace SwiftnessRework
                     bucket.Remove(refholder);
                     continue;
                 }
-                // can target become null at that point?
                 if(refholder.weakRef.Target == null)
                     Debug.Log($"target is null!");
-                // equals might not be correct if it depends on field value or is overridden
-                // maybe RefEquals could work better
+                // can target become null right before equality is tested?
                 if (inst.Equals(refholder.weakRef.Target))
                 {
                     eCount++;

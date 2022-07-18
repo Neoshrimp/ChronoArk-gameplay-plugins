@@ -28,58 +28,89 @@ namespace SwiftnessRework
 
 
 
-		// 2do finish
-		/*        [HarmonyPatch]
-				class QuickKeywordPatch
+        [HarmonyPatch]
+        class QuickKeywordPatch
+        {
+
+            static bool CheckQuick(Skill skill)
+            {
+                return quickManager.SkillGetQuick(skill) || skill.Disposable;
+            }
+
+			static void AddQuickKeyword(Skill skill, List<string> kwList, SkillToolTip thisInst)
+			{
+				if (quickManager.SkillGetQuick(skill))
 				{
+					kwList.Add(SkillToolTip.ColorChange("FF7C34", SwiftnessReworkPlugin.QuickKeyWordName));
+					// tooltip displayed out of order but whatever
+					thisInst.PlusTooltipsView(SwiftnessReworkPlugin.QuickKeyWordName, SwiftnessReworkPlugin.QuickKeyWordDesc);
+				}
+			}
 
-					static bool CheckQuick1(Skill skill)
-					{
-						return quickManager.SkillGetQuick(skill) || skill.Disposable;
+			static IEnumerable<MethodBase> TargetMethods()
+            {
+                yield return AccessTools.Method(typeof(SkillToolTip), nameof(SkillToolTip.Input));
+            }
+
+            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+            {
+                int i = 0;
+                var ciList = instructions.ToList();
+                var c = ciList.Count();
+				bool firstAfterCheckInject = false;
+				LocalBuilder kwListLb = null;
+                foreach (var ci in instructions)
+                {
+
+					if (firstAfterCheckInject && ci.IsStloc() 
+						&& ciList[Math.Max(i - 1, 0)].opcode == OpCodes.Newobj 
+						&& ciList[Math.Max(i - 2, 0)].IsStloc() 
+						&& ciList[Math.Max(i - 3, 0)].opcode == OpCodes.Newobj)
+                    {
+						kwListLb = (LocalBuilder)ci.operand;
+						firstAfterCheckInject = false;
+
 					}
 
-					static IEnumerable<MethodBase> TargetMethods()
+					if (ci.Is(OpCodes.Callvirt, AccessTools.Method(typeof(Skill), "get_Disposable")) && ciList[Math.Min(i + 1, c - 1)].opcode == OpCodes.Brtrue)
 					{
-						yield return AccessTools.Method(typeof(SkillToolTip), nameof(SkillToolTip.Input));
+						firstAfterCheckInject = true;
+						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(QuickKeywordPatch), nameof(QuickKeywordPatch.CheckQuick)));
 					}
-
-					static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+					else if (
+						ci.Is(OpCodes.Callvirt, AccessTools.Method(typeof(Skill), "get_Track")) && ciList[Math.Min(i + 1, c - 1)].opcode == OpCodes.Brfalse)
 					{
-						int i = 0;
-						var ciList = instructions.ToList();
-						var c = ciList.Count();
-						foreach (var ci in instructions)
-						{
-							if (ci.Is(OpCodes.Callvirt, AccessTools.Method(typeof(Skill), "get_Disposable")) && ciList[Math.Min(i+1, c-1)].opcode == OpCodes.Brtrue)
-							{
-								yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(QuickKeywordPatch), nameof(QuickKeywordPatch.CheckQuick1)));
-							}
-							else
-							else
-							{
-								yield return ci;
-							}
-							i++;
-						}
+						yield return new CodeInstruction(OpCodes.Dup);
+						yield return new CodeInstruction(OpCodes.Ldloc, kwListLb);
+						yield return new CodeInstruction(OpCodes.Ldarg_0);
+						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(QuickKeywordPatch), nameof(QuickKeywordPatch.AddQuickKeyword)));
+						yield return ci;
 					}
+					else
+					{
+						yield return ci;
+					}
+                    i++;
+                }
+            }
 
-				}*/
+        }
 
 
-		[HarmonyPatch(typeof(ScriptLocalization))]
-		class Swift2IODesc_Patch
+        [HarmonyPatch(typeof(ScriptLocalization.Battle_Keyword))]
+		class Swift2AgileDesc_Patch
 		{
 
 			[HarmonyPatch("get_Quick"), HarmonyPostfix]
 			static void NamePostfix(ref string __result)
 			{
-				__result = "Ignore Taunt";
+				__result = "Agile";
 			}
 
 			[HarmonyPatch("get_Quick_Desc"), HarmonyPostfix]
 			static void DescPostfix(ref string __result)
 			{
-				__result = "Does not overload caster.";
+				__result = "Ignores overload.";
 			}
 		}
 

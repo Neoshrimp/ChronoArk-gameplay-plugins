@@ -16,6 +16,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using I2.Loc;
 
+//2do maybe add localization
 namespace SwiftnessRework
 {
 	[BepInPlugin(GUID, "Swiftness Rework", version)]
@@ -61,9 +62,22 @@ namespace SwiftnessRework
 			}
 		}
 
+		public readonly static string QuickKeyWordKey = GUID + "_QuickKeyWordKey";
+		public readonly static string QuickKeyWordName = "Quick";
+		public readonly static string QuickKeyWordDesc = "Does not advance enemy action counts.";
 
-
-
+		[HarmonyPatch(typeof(GDESkillKeywordData), nameof(GDESkillKeywordData.LoadFromSavedData))]
+		class CustomKeywordTooltips
+		{
+			static void Postfix(GDESkillKeywordData __instance)
+			{
+				if (__instance.Key == QuickKeyWordKey)
+				{
+					__instance.Name = "<b>" + QuickKeyWordName + "</b>";
+					__instance.Desc = QuickKeyWordDesc;
+				}
+			}
+		}
 
 
 

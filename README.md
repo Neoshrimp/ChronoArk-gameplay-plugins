@@ -10,7 +10,7 @@ Links to repositories with mods from other creators. Kindly check them out!
 [Mods by windypanda1](https://github.com/fwqefwqef/ChronoArkMods-windy)
 
 ---
-## Use plugins in this repo with Chrono Ark 1.7beta version at your own risk. More likely than not they are gonna break the game
+## Plugins updated to work with version 1.9
 
 Repo for various [Chrono Ark](https://store.steampowered.com/app/1188930/Chrono_Ark/) plugins modifying course of the game. 
 Modifications can include new game modes, new or altered items or cards, quality of life improvements and so on.

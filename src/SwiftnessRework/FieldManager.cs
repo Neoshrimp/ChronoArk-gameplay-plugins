@@ -119,6 +119,7 @@ namespace SwiftnessRework
             }
             else
             {
+
                 Debug.Log($"GetVal: no BUCKET with {key} hashcode (object: {inst})");
                 throw new Exception($"GetVal: no BUCKET with {ComputeKey(inst)} hashcode (object: {inst})");
             }

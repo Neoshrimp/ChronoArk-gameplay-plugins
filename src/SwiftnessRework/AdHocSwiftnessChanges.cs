@@ -176,7 +176,7 @@ namespace SwiftnessRework
         }
 
 
-
+        //2do load local instead
         [HarmonyPatch]
         class AddQuickWhereNotCountIsAdded_Patch
         {
@@ -191,13 +191,13 @@ namespace SwiftnessRework
                 // optional for skill effect
                 yield return AccessTools.Method(typeof(Extended_Lucy_6), nameof(Extended_Lucy_6.SkillTargetSingle));
                 yield return AccessTools.Method(typeof(Extended_S_Sizz_0), nameof(Extended_S_Sizz_0.SkillUseSingle));
-                yield return AccessTools.Method(typeof(S_Prime_12), nameof(S_Prime_12.SkillUseSingle));
-
-
             }
 
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
             {
+                int i = 0;
+                var ciList = instructions.ToList();
+                var c = ciList.Count();
                 CodeInstruction prevCi = null;
                 foreach (var ci in instructions)
                 {
@@ -207,7 +207,7 @@ namespace SwiftnessRework
                     {
                         yield return ci;
                         yield return new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(AdHocSwiftnessChanges), nameof(quickManager)));
-                        yield return new CodeInstruction(OpCodes.Ldarg_0);
+                        yield return ciList[i - 2];
                         yield return new CodeInstruction(OpCodes.Ldc_I4_1);
                         yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(QuickManager), nameof(QuickManager.SetVal)));
                     }
@@ -215,11 +215,51 @@ namespace SwiftnessRework
                     {
                         yield return ci;
                     }
+                    i++;
                     prevCi = ci;
                 }
             }
 
         }
+
+
+        [HarmonyPatch(typeof(S_Prime_12), nameof(S_Prime_12.SkillUseSingle))]
+        class ChargeOfFaith_Patch
+        {
+
+            static void QuickTrue(Skill skill)
+            {
+                quickManager.SetVal(skill, true);
+            }
+
+            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+            {
+                int i = 0;
+                var ciList = instructions.ToList();
+                var c = ciList.Count();
+                CodeInstruction prevCi = null;
+                foreach (var ci in instructions)
+                {
+                    if (ci.opcode == OpCodes.Ldc_I4_1
+                        && ciList[Math.Min(i+1, c-1)].Is(OpCodes.Callvirt, AccessTools.Method(typeof(Skill), "set_NotCount"))
+                        //|| ci.Is(OpCodes.Stfld, AccessTools.Field(typeof(Skill_Extended), nameof(Skill_Extended.NotCount)))
+                        )
+                    {
+                        yield return new CodeInstruction(OpCodes.Dup);
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ChargeOfFaith_Patch), nameof(ChargeOfFaith_Patch.QuickTrue)));
+                        yield return ci;
+                    }
+                    else
+                    {
+                        yield return ci;
+                    }
+                    i++;
+                    prevCi = ci;
+                }
+            }
+        }
+
+
 
     }
 }

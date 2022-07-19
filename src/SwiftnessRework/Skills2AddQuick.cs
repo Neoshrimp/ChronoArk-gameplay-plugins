@@ -58,7 +58,6 @@ namespace SwiftnessRework
             GDEItemKeys.Skill_S_Azar_5,
             GDEItemKeys.Skill_S_Azar_7,
             GDEItemKeys.Skill_S_Azar_8_LucyDraw,
-            GDEItemKeys.Skill_S_Azar_9,
             GDEItemKeys.Skill_S_Azar_11,
             // joey
 			GDEItemKeys.Skill_S_Joey_10,
@@ -209,8 +208,9 @@ namespace SwiftnessRework
             GDEItemKeys.Skill_S_LucyC_7,
             GDEItemKeys.Skill_S_LucyC_6,
 
-            // items
+            // other
 			GDEItemKeys.Skill_S_MessiahbladesPrototype,
+            GDEItemKeys.Skill_S_DefultSkill_2,
 
         };
     }

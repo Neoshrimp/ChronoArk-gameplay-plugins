@@ -21,7 +21,7 @@ namespace SwiftnessRework
             if (inst is Skill skill)
             {
                 //key = key + skill.MySkill.Key;
-                key = key + skill.MySkill.KeyID;
+                //key = key + skill.MySkill.KeyID;
 
             }
             else if (inst is Skill_Extended se)

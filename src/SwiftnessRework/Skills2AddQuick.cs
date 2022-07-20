@@ -53,9 +53,9 @@ namespace SwiftnessRework
             // azar
             GDEItemKeys.Skill_S_Azar_P_0,
 			GDEItemKeys.Skill_S_Azar_0,
-			GDEItemKeys.Skill_S_Azar_2,
+            GDEItemKeys.Skill_S_Azar_1,
+            GDEItemKeys.Skill_S_Azar_2,
             GDEItemKeys.Skill_S_Azar_4,
-            GDEItemKeys.Skill_S_Azar_5,
             GDEItemKeys.Skill_S_Azar_7,
             GDEItemKeys.Skill_S_Azar_8_LucyDraw,
             GDEItemKeys.Skill_S_Azar_11,
@@ -95,6 +95,7 @@ namespace SwiftnessRework
             GDEItemKeys.Skill_S_Trisha_7,
             GDEItemKeys.Skill_S_Trisha_0,
             GDEItemKeys.Skill_S_Trisha_9,
+            GDEItemKeys.Skill_S_Trisha_12,
             // lian
             GDEItemKeys.Skill_S_Lian_8,
             GDEItemKeys.Skill_S_Lian_2,

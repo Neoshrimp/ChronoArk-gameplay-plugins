@@ -40,7 +40,7 @@ namespace SwiftnessRework
                 if (addQuickSet.Contains(__instance.Key))
                 {
                     dict.TryGetString("Description", out string ogDesc, __instance.Key);
-                    __instance.Description = ogDesc.Replace("Swiftness", "<b>Agile</b> and <b>Quick</b>");
+                    __instance.Description = ogDesc.Replace("Swiftness", "<b>Effortless</b> and <b>Quick</b>");
                     if (!quickManager.defaultQuickness.Contains(__instance.Key))
                     {
                         dict.TryGetCustomList("PlusKeyWords", out List<GDESkillKeywordData> ogKeyWords);
@@ -54,7 +54,7 @@ namespace SwiftnessRework
                 {
                     __instance.Description = @"Transfer all Pincer Attack buffs to the target.
  Create a 1 cost 'Eve, Help!' skill in your hand.
- It gains <b>Agile</b> and <b>Quick</b>.
+ It gains <b>Effortless</b> and <b>Quick</b>.
  The created skill can only be cast this turn.";
                     if (!quickManager.defaultQuickness.Contains(__instance.Key))
                     {
@@ -77,7 +77,7 @@ namespace SwiftnessRework
                 if (__instance.Key == GDEItemKeys.SkillExtended_SkillEn_IlyaPassive)
                 {
                     dict.TryGetString("EnforceString", out string ogEnforceString, __instance.Key);
-                    __instance.EnforceString = ogEnforceString.Replace("Swiftness", "<b>Agile</b>");
+                    __instance.EnforceString = ogEnforceString.Replace("Swiftness", "<b>Effortless</b>");
                 }
             }
         }

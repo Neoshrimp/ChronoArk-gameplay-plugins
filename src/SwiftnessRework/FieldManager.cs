@@ -17,7 +17,7 @@ namespace SwiftnessRework
     abstract public class FieldManager<Tkey, TfieldVal>
     {
 
-        public struct RefHolder
+        public class RefHolder
         {
             public WeakReference weakRef;
             public TfieldVal value;
@@ -29,6 +29,7 @@ namespace SwiftnessRework
         // some value which differentiates the instances in interest but doesn't change through lifetime of the instance
         // example could be instance.GetType().Name if 
         // default inst.GetHashCode() could still be good enough in terms of functionality
+
         public abstract Tkey ComputeKey(object inst);
 
         public FieldManager()
@@ -60,12 +61,11 @@ namespace SwiftnessRework
 
         bool LoopBucket(object inst, List<RefHolder> bucket, out TfieldVal result, out int index)
         {
-            int eCount = 0;
-            var found = false;
 
             result = default(TfieldVal);
             index = -1;
             var i = 0;
+
             if (bucket.Count == 1)
             {
                 result = bucket[0].value;
@@ -73,32 +73,28 @@ namespace SwiftnessRework
                 return true;
             }
 
+            // if key distribution is good this loop will rarely be executed
             foreach (var refholder in bucket.ToArray())
             {
+                // might as well remove dead values while looping
                 if (!refholder.weakRef.IsAlive)
                 {
                     bucket.Remove(refholder);
                     continue;
                 }
-                if(refholder.weakRef.Target == null)
-                    Debug.Log($"target is null!");
                 // can target become null right before equality is tested?
-                if (inst.Equals(refholder.weakRef.Target))
+                var tempStrongRef = refholder.weakRef.Target;
+                if (inst.Equals(tempStrongRef))
                 {
-                    eCount++;
+
                     result = refholder.value;
-                    found = true;
                     index = i;
+                    return true;
                 }
                 i++;
-                
-            }
-            if (eCount > 1)
-            {
-                Debug.Log($"equals is shit {ComputeKey(inst)} hashcode (object: {inst})");
-            }
 
-            return found;
+            }
+            return false;
             
         }
 
@@ -113,8 +109,10 @@ namespace SwiftnessRework
                 }
                 else
                 {
-                    Debug.Log($"GetVal: no ENTRY with {key} hashcode (object: {inst})");
-                    throw new Exception($"GetVal: no ENTRY with {key} hashcode (object: {inst})");
+                    var st = new StackTrace();
+                    st.GetFrames().ToList().ForEach(f => Debug.Log(f));
+                    Debug.Log($"GetVal: no ENTRY with {key} key, {i} index (object: {inst})");
+                    throw new Exception($"GetVal: no ENTRY with {key} hashcode, {i} index (object: {inst})");
                 }
             }
             else
@@ -132,14 +130,14 @@ namespace SwiftnessRework
             var key = ComputeKey(inst);
             if (fieldDict.TryGetValue(key, out List<RefHolder> bucket))
             {
-
                 if (LoopBucket(inst, bucket, out TfieldVal outValue, out int i))
                 {
-                    bucket[i] = new RefHolder() { weakRef = bucket[0].weakRef, value = val };
-                    fieldDict[key] = bucket;
+                    fieldDict[key][i].value = val;
                 }
                 else
                 {
+                    var st = new StackTrace();
+                    st.GetFrames().ToList().ForEach(f => Debug.Log(f));
                     Debug.Log($"Setval: no ENTRY with {key} hashcode (object: {inst})");
                     throw new Exception($"Setval: no ENTRY with {key} hashcode (object: {inst})");
                 }
@@ -157,6 +155,7 @@ namespace SwiftnessRework
         public void CullDestroyed()
         {
             Debug.Log("fieldDict size before: " + fieldDict.Count);
+
             var keys2Remove = new List<Tkey>();
             foreach (var kv in fieldDict)
             {
@@ -179,6 +178,7 @@ namespace SwiftnessRework
             }
 
             Debug.Log("fieldDict size after: " + fieldDict.Count);
+
         }
 
 

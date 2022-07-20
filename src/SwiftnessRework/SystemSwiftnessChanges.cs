@@ -104,7 +104,7 @@ namespace SwiftnessRework
 			[HarmonyPatch("get_Quick"), HarmonyPostfix]
 			static void NamePostfix(ref string __result)
 			{
-				__result = "Agile";
+				__result = "Effortless";
 			}
 
 			[HarmonyPatch("get_Quick_Desc"), HarmonyPostfix]

@@ -22,18 +22,8 @@ namespace SwiftnessRework
 		static QuickManager quickManager = SwiftnessReworkPlugin.quickManager;
 
 
-
-		/*        [HarmonyPatch(typeof(Skill), nameof(Skill.initField))]
-				class Skill_Patch
-				{
-					static void Postfix(Skill __instance)
-					{
-
-					}
-				}*/
-
 		[HarmonyPatch]
-		class SkillExtendedConstPatch
+		class SkillConstPatch
 		{
 			static IEnumerable<MethodBase> TargetMethods()
 			{
@@ -46,9 +36,9 @@ namespace SwiftnessRework
 			}
 		}
 
-
+	
 		[HarmonyPatch]
-		class SkillConstPatch
+		class SkillExtendedConstPatch
 		{
 			static IEnumerable<MethodBase> TargetMethods()
 			{
@@ -65,16 +55,35 @@ namespace SwiftnessRework
 		[HarmonyPatch(typeof(Skill), nameof(Skill.initField))]
 		class SkillinitFieldPatch
 		{
-			static void Postfix(Skill __instance)
+			static void SetDefaultQuick(Skill skill)
 			{
-
-				//quickManager.AddField(__instance, false);
-				if (quickManager.defaultQuickness.Contains(__instance.MySkill.KeyID))
+				if (quickManager.defaultQuickness.Contains(skill.MySkill.KeyID))
 				{
-					quickManager.SetVal(__instance, true);
+					quickManager.SetVal(skill, true);
 				}
 			}
-		}
+
+
+            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+            {
+                foreach (var ci in instructions)
+                {
+                    if (ci.Is(OpCodes.Call, AccessTools.Method(typeof(Skill), "set_NotCount")))
+                    {
+						Debug.Log("deez");
+						yield return ci;
+						yield return new CodeInstruction(OpCodes.Ldarg_0);
+						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SkillinitFieldPatch), nameof(SkillinitFieldPatch.SetDefaultQuick)));
+						yield return new CodeInstruction(OpCodes.Ldstr, "quick inited");
+						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Debug), nameof(Debug.Log), new Type[] { typeof(object) }));
+					}
+					else
+                    {
+                        yield return ci;
+                    }
+                }
+            }
+        }
 
 		static void AddQuick(object newSkill, object oldSkill)
 		{

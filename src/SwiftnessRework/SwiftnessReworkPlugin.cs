@@ -64,6 +64,8 @@ namespace SwiftnessRework
 			}
 		}
 
+		public readonly static string NewSwiftnessName = "Effortless";
+
 		public readonly static string QuickKeyWordKey = GUID + "_QuickKeyWordKey";
 		public readonly static string QuickKeyWordName = "Quick";
 		public readonly static string QuickKeyWordDesc = "Does not advance enemy action counts.";

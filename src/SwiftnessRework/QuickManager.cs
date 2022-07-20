@@ -18,13 +18,10 @@ namespace SwiftnessRework
         public override string ComputeKey(object inst)
         {
             var key = inst.GetHashCode().ToString();
-            if (inst is Skill skill)
-            {
-                //key = key + skill.MySkill.Key;
-                //key = key + skill.MySkill.KeyID;
+/*            if (inst is Skill skill)
+                key = key + skill.MySkill.KeyID;*/
 
-            }
-            else if (inst is Skill_Extended se)
+            if (inst is Skill_Extended se)
             {
                 key = key + se.GetType().Name;
             }

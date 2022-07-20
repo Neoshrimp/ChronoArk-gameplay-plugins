@@ -39,9 +39,8 @@ namespace SwiftnessRework
 		void Awake()
 		{
 			logger = Logger;
-
-
-			quickManager = new QuickManager(Skills2AddQuick.defaultQuickness, 10000);
+			
+			quickManager = new QuickManager(Skills2AddQuick.defaultQuickness, 4000, 100);
 			harmony.PatchAll();
 			cullRoutine = StartCoroutine(CleanFields());
 

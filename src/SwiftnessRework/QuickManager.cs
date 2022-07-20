@@ -10,7 +10,7 @@ namespace SwiftnessRework
 
         public HashSet<string> defaultQuickness;
 
-        public QuickManager(HashSet<string> defaultQuickness, int cap) : base(cap)
+        public QuickManager(HashSet<string> defaultQuickness, int cap, int defaultListCap) : base(cap, defaultListCap)
         {
             this.defaultQuickness = defaultQuickness;
         }
@@ -27,6 +27,7 @@ namespace SwiftnessRework
             }
             return key;
         }
+
 
         public bool SkillGetQuick(Skill inst)
         {

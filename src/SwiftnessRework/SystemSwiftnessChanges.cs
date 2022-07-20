@@ -158,7 +158,8 @@ namespace SwiftnessRework
         {
 			static bool EncyclopediaCheckSwift(GDESkillData skillData)
 			{
-				return skillData.NotCount && quickManager.defaultQuickness.Contains(skillData.KeyID);
+				// check for key might not be necessary
+				return skillData.NotCount && (quickManager.defaultQuickness.Contains(skillData.KeyID) || quickManager.defaultQuickness.Contains(skillData.Key));
 			}
 
 			static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)

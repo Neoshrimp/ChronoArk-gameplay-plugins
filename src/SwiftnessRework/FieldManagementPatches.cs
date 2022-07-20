@@ -57,7 +57,8 @@ namespace SwiftnessRework
 		{
 			static void SetDefaultQuick(Skill skill)
 			{
-				if (quickManager.defaultQuickness.Contains(skill.MySkill.KeyID))
+				// hashset contains is basically free copium
+				if (quickManager.defaultQuickness.Contains(skill.MySkill.KeyID) || quickManager.defaultQuickness.Contains(skill.MySkill.Key))
 				{
 					quickManager.SetVal(skill, true);
 				}
@@ -70,12 +71,9 @@ namespace SwiftnessRework
                 {
                     if (ci.Is(OpCodes.Call, AccessTools.Method(typeof(Skill), "set_NotCount")))
                     {
-						Debug.Log("deez");
 						yield return ci;
 						yield return new CodeInstruction(OpCodes.Ldarg_0);
 						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SkillinitFieldPatch), nameof(SkillinitFieldPatch.SetDefaultQuick)));
-						yield return new CodeInstruction(OpCodes.Ldstr, "quick inited");
-						yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Debug), nameof(Debug.Log), new Type[] { typeof(object) }));
 					}
 					else
                     {

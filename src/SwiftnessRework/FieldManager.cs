@@ -1,14 +1,4 @@
-﻿using BepInEx;
-using BepInEx.Configuration;
-using GameDataEditor;
-using HarmonyLib;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
-using UnityEngine;
-using System.Linq;
-using Debug = UnityEngine.Debug;
+﻿using System.Collections.Generic;
 using System;
 
 namespace SwiftnessRework
@@ -24,12 +14,12 @@ namespace SwiftnessRework
         }
 
         public Dictionary<Tkey, List<RefHolder>> fieldDict;
+        public int defaultListCap = 10;
 
-        // any custom method depending to reduce "key collision"
-        // some value which differentiates the instances in interest but doesn't change through lifetime of the instance
-        // example could be instance.GetType().Name if 
+        // some custom method to reduce "key collision"
+        // some value which differentiates the instances but doesn't change through lifetime of the instance
+        // example could be inst.GetHashCode().toString() + instance.GetType().Name if associated types are extended often
         // default inst.GetHashCode() could still be good enough in terms of functionality
-
         public abstract Tkey ComputeKey(object inst);
 
         public FieldManager()
@@ -37,9 +27,10 @@ namespace SwiftnessRework
             fieldDict = new Dictionary<Tkey, List<RefHolder>>();
         }
 
-        public FieldManager(int cap)
+        public FieldManager(int cap, int defaultListCap)
         {
             fieldDict = new Dictionary<Tkey, List<RefHolder>>(cap);
+            this.defaultListCap = defaultListCap;
         }
 
 
@@ -49,11 +40,10 @@ namespace SwiftnessRework
             var key = ComputeKey(inst);
             if (!dict.ContainsKey(key))
             {
-                dict.Add(key, new List<RefHolder>() { new RefHolder() { weakRef = new WeakReference(inst, false), value = val } });
+                dict.Add(key, new List<RefHolder>(defaultListCap) { new RefHolder() { weakRef = new WeakReference(inst, false), value = val } });
             }
             else
             {
-                Debug.Log($"its already in!!! {key} hashcode (object: {inst})");
                 dict[key].Add(new RefHolder() { weakRef = new WeakReference(inst, false), value = val });
             }
 
@@ -109,17 +99,12 @@ namespace SwiftnessRework
                 }
                 else
                 {
-                    var st = new StackTrace();
-                    st.GetFrames().ToList().ForEach(f => Debug.Log(f));
-                    Debug.Log($"GetVal: no ENTRY with {key} key, {i} index (object: {inst})");
-                    throw new Exception($"GetVal: no ENTRY with {key} hashcode, {i} index (object: {inst})");
+                    throw new Exception($"GetVal: no ENTRY with {key} key, {i} index (object: {inst})");
                 }
             }
             else
             {
-
-                Debug.Log($"GetVal: no BUCKET with {key} hashcode (object: {inst})");
-                throw new Exception($"GetVal: no BUCKET with {ComputeKey(inst)} hashcode (object: {inst})");
+                throw new Exception($"GetVal: no BUCKET with {ComputeKey(inst)} key (object: {inst})");
             }
             
 
@@ -136,17 +121,13 @@ namespace SwiftnessRework
                 }
                 else
                 {
-                    var st = new StackTrace();
-                    st.GetFrames().ToList().ForEach(f => Debug.Log(f));
-                    Debug.Log($"Setval: no ENTRY with {key} hashcode (object: {inst})");
-                    throw new Exception($"Setval: no ENTRY with {key} hashcode (object: {inst})");
+                    throw new Exception($"Setval: no ENTRY with {key} key (object: {inst})");
                 }
 
             }
             else
             {
-                Debug.Log($"SetVal: no BUCKET with {ComputeKey(inst)} hashcode (object: {inst})");
-                throw new Exception($"SetVal: no BUCKET with {ComputeKey(inst)} hashcode (object: {inst})");
+                throw new Exception($"SetVal: no BUCKET with {ComputeKey(inst)} key (object: {inst})");
             }
         }
 
@@ -154,8 +135,6 @@ namespace SwiftnessRework
 
         public void CullDestroyed()
         {
-            Debug.Log("fieldDict size before: " + fieldDict.Count);
-
             var keys2Remove = new List<Tkey>();
             foreach (var kv in fieldDict)
             {
@@ -177,7 +156,6 @@ namespace SwiftnessRework
                 fieldDict.Remove(k);
             }
 
-            Debug.Log("fieldDict size after: " + fieldDict.Count);
 
         }
 

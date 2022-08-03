@@ -1,0 +1,6 @@
+﻿<Project>
+  <PropertyGroup>
+    <GameFolder>F:\Program Files (x86)\Steam\steamapps\common\Chrono Ark</GameFolder>
+    <BepInExFolder>F:\Program Files (x86)\Steam\steamapps\common\Chrono Ark\x64\Master\BepInEx\core</BepInExFolder>
+  </PropertyGroup>
+</Project>

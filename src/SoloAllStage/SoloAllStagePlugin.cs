@@ -49,9 +49,34 @@ namespace PlayableLucy
                 __instance.RuleChange.EndisStage4 = false;
             }
         }
-        
 
+        [HarmonyPatch(typeof(B_S4_King_minion_0_0_T), nameof(B_S4_King_minion_0_0_T.Init))]
+        class KingTighteningChainFix
+        {
+            static void Postfix(B_S4_King_minion_0_0_T __instance)
+            {
+                if (PlayData.TSavedata.SpRule != null && __instance.BChar.MyTeam.AliveChars.Count < 2)
+                {
+                    __instance.PlusStat.Stun = false;
+                    __instance.PlusStat.spd = -10;
+                    __instance.PlusStat.dod = -50f;
+                    __instance.PlusStat.cri = -100f;
+                }
+            }
+        }
 
+        [HarmonyPatch(typeof(BattleSystem), nameof(BattleSystem.BattleEnd))]
+        class BattleEndPatch
+        {
+            static void Prefix(SR_Solo __instance)
+            {
+                if (PlayData.TSavedata.SpRule != null && PlayData.TSavedata.Party.Count == 1)
+                {
+                    PlayData.TSavedata.SpRule.ChellangeClear();
+                    PlayData.TSavedata.SpRule.ChellangeClearUnlockAndReward();
+                }
+            }
+        }
 
 
     }

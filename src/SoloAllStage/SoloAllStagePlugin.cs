@@ -9,9 +9,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using DarkTonic.MasterAudio;
+using I2.Loc;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UseItem;
 using Debug = UnityEngine.Debug;
 
 namespace PlayableLucy
@@ -70,7 +73,7 @@ namespace PlayableLucy
         {
             static void Prefix(SR_Solo __instance)
             {
-                if (PlayData.TSavedata.SpRule != null && PlayData.TSavedata.Party.Count == 1)
+                if (PlayData.TSavedata.StageNum == 5 && PlayData.TSavedata.SpRule != null && PlayData.TSavedata.Party.Count == 1)
                 {
                     PlayData.TSavedata.SpRule.ChellangeClear();
                     PlayData.TSavedata.SpRule.ChellangeClearUnlockAndReward();
@@ -78,6 +81,27 @@ namespace PlayableLucy
             }
         }
 
-
+        [HarmonyPatch(typeof(SkillBookCharacter_Rare), nameof(SkillBookCharacter_Rare.Use))]
+        class RareSkillBookPatch
+        {
+            static void Postfix(SkillBookCharacter_Rare __instance, ref bool __result)
+            {
+                if (__result == false && PlayData.TSavedata.SpRule != null && PlayData.TSavedata.Party.Count == 1)
+                {
+                    List<string> list = new List<string>();
+                    list.Add(PlayData.LucyRandomSkill());
+                    list.Add(PlayData.LucyRandomSkill());
+                    list.Add(PlayData.LucyRandomSkill());
+                    List<Skill> list2 = new List<Skill>();
+                    foreach (string key in list)
+                    {
+                        list2.Add(Skill.TempSkill(key, PlayData.BattleLucy, PlayData.TempBattleTeam));
+                    }
+                    FieldSystem.DelayInput(BattleSystem.I_OtherSkillSelect(list2, new SkillButton.SkillClickDel(__instance.SkillAdd), ScriptLocalization.System_Item.SkillAdd, false, true, true, true, false));
+                    MasterAudio.PlaySound("BookFlip", 1f, null, 0f, null, null, false, false);
+                    __result = true;
+                }
+            }
+        }
     }
 }

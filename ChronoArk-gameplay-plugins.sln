@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayableLucy", "src\Playabl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwiftnessRework", "src\SwiftnessRework\SwiftnessRework.csproj", "{006AE89D-6DE3-4150-88E0-F162511C34C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewDeck", "src\ViewDeck\ViewDeck.csproj", "{3EF2AA26-BA9F-4884-A53F-DDDA0683A1B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +119,10 @@ Global
 		{006AE89D-6DE3-4150-88E0-F162511C34C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{006AE89D-6DE3-4150-88E0-F162511C34C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{006AE89D-6DE3-4150-88E0-F162511C34C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EF2AA26-BA9F-4884-A53F-DDDA0683A1B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF2AA26-BA9F-4884-A53F-DDDA0683A1B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF2AA26-BA9F-4884-A53F-DDDA0683A1B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF2AA26-BA9F-4884-A53F-DDDA0683A1B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
 # Chrono Ark Gameplay Plugins :baguette_bread: :watch: :hedgehog:
 
 ### [**한국어 번역 Korean Translation**](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/blob/master/KoreanREADME.md)
-Thanks to [windypanda1](https://github.com/fwqefwqef) Korean for translation!
+Thanks to [windypanda1](https://github.com/fwqefwqef) fro Korean translation!
 
 ---
 ## Other mod repos

@@ -6,11 +6,13 @@ using I2.Loc;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Debug = UnityEngine.Debug;
+using System.Reflection;
 
-namespace NewNamespace
+namespace ViewDeckNameSpace
 {
     [BepInPlugin(GUID, "View deck and discard", version)]
     [BepInProcess("ChronoArk.exe")]
@@ -70,18 +72,53 @@ namespace NewNamespace
 
         static bool showingDeck = false;
         static bool showingDiscard = false;
+        static SkillButtonMain pileViewButton;
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F) && !showingDeck && !showingDiscard)
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                ShowDeck();
-            }
-            if (Input.GetKeyDown(KeyCode.G) && !showingDeck && !showingDiscard)
-            {
-                ShowDiscard();
+                if (!showingDeck && !showingDiscard)
+                {
+                    ShowDeck();
+                }
+                // toggle deck view
+                else if (showingDeck)
+                {
+                    Debug.Log(pileViewButton);
+                    Debug.Log(pileViewButton.SkillbuttonBig);
+
+                    pileViewButton.SkillbuttonBig.Click();
+                }
+                // switch to discard view
+                else if (showingDiscard)
+                {
+                    pileViewButton.SkillbuttonBig.Click();
+                    ShowDiscard();
+                }
             }
 
+
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                if (!showingDeck && !showingDiscard)
+                {
+                    ShowDiscard();
+
+                }
+                // toggle deck view
+                else if (showingDiscard)
+                {
+                    pileViewButton.SkillbuttonBig.Click();
+                }
+                // switch to discard view
+                else if (showingDeck)
+                {
+                    pileViewButton.SkillbuttonBig.Click();
+                    ShowDiscard();
+                }
+            }
+           
         }
 
 
@@ -93,19 +130,73 @@ namespace NewNamespace
             {
                 showingDeck = false;
                 showingDiscard = false;
+                pileViewButton = null;
             }
         }
 
 
-        // 2do doesn't work
-        //[HarmonyPatch]
-        class DeckToolTip_Patch
+        [HarmonyPatch(typeof(SelectSkillList), nameof(SelectSkillList.NewSelectSkillList))]
+        class SelectSkillList_Patch
         {
+            static void Postfix(SelectSkillList __instance)
+            {
+                pileViewButton = __instance.gameObject.GetComponent<SkillButtonMain>();
+            }
+        }
 
 
-            static IEnumerable<MethodBase> TargetMethods()
+
+
+        [HarmonyPatch(typeof(SimpleTooltip), "Start")]
+        class SimpleTooltip_Patch
+        {
+            static void Postfix(SimpleTooltip __instance)
             {
 
+                Debug.Log(__instance.gameObject.name);
+                if (__instance.gameObject.name == "Image" && __instance.transform.parent.gameObject.name == "Deck")
+                {
+
+                    __instance.TooltipString = ScriptLocalization.UI_Battle_Tooltip.Deck;
+                    __instance.ToolTipString_l2.mTerm = ScriptLocalization.UI_Battle_Tooltip.Deck;
+
+                    var viewBehaviour = __instance.gameObject.AddComponent<OnClickView>();
+                    viewBehaviour.action = ShowDeck;
+                }
+
+                else if (__instance.gameObject.name == "Image" && __instance.transform.parent.gameObject.name == "Trash")
+                {
+                    __instance.TooltipString = ScriptLocalization.UI_Battle_Tooltip.TrashDeck;
+                    __instance.ToolTipString_l2.mTerm = ScriptLocalization.UI_Battle_Tooltip.TrashDeck;
+
+                    var viewBehaviour = __instance.gameObject.AddComponent<OnClickView>();
+                    viewBehaviour.action = ShowDiscard;
+                }
+            }
+
+        }
+
+        public delegate void SingleFunc();
+
+        public class OnClickView : MonoBehaviour, IPointerClickHandler
+        {
+            public SingleFunc action;
+
+            public void OnPointerClick(PointerEventData eventData)
+            {
+                if (!showingDeck && !showingDiscard)
+                {
+                    action.Invoke();
+                }
+            }
+        }
+
+
+        [HarmonyPatch]
+        class DeckToolTip_Patch
+        {
+            static IEnumerable<MethodBase> TargetMethods()
+            {
                 yield return AccessTools.PropertyGetter(typeof(ScriptLocalization.UI_Battle_Tooltip), "Deck");
             }
 
@@ -117,7 +208,7 @@ namespace NewNamespace
             }
         }
 
-        //[HarmonyPatch]
+        [HarmonyPatch]
         class DiscardToolTip_Patch
         {
 

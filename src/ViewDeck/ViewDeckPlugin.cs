@@ -11,6 +11,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Debug = UnityEngine.Debug;
 using System.Reflection;
+using System.Linq;
+using System.Reflection.Emit;
 
 namespace ViewDeckNameSpace
 {
@@ -40,17 +42,22 @@ namespace ViewDeckNameSpace
         }
 
 
-/*        static List<Skill> frozenDeck;
-        static HashSet<Skill> frozenContent;*/
+//        static List<Skill> frozenDeck;
+//        static HashSet<Skill> frozenContent;
+
 
         static void ShowDeck()
         {
 
-            if (BattleSystem.instance != null && BattleSystem.instance.AllyTeam.Skills_Deck.Count != 0)
+            if (BattleSystem.instance != null)
             {
                 showingDeck = true;
                 var deckCopy = new List<Skill>(BattleSystem.instance.AllyTeam.Skills_Deck);
+
                 BattleSystem.DelayInput(BattleSystem.I_OtherSkillSelect(Misc.Shuffle(deckCopy), DeckDelegate, "Deck in random order\n[click card to close]"));
+                if(BattleSystem.instance.AllyTeam.Skills_Deck.Count == 0)
+                    showingDeck = false;
+
             }
 
         }
@@ -58,10 +65,13 @@ namespace ViewDeckNameSpace
 
         static void ShowDiscard()
         {
-            if (BattleSystem.instance != null && BattleSystem.instance.AllyTeam.Skills_UsedDeck.Count != 0)
+            if (BattleSystem.instance != null)
             {
                 showingDiscard = true;
                 BattleSystem.DelayInput(BattleSystem.I_OtherSkillSelect(BattleSystem.instance.AllyTeam.Skills_UsedDeck, DiscardDelegate, "Discard pile\n[click card to close]"));
+                if(BattleSystem.instance.AllyTeam.Skills_UsedDeck.Count == 0)
+                    showingDiscard = false;
+
             }
         }
 
@@ -83,18 +93,15 @@ namespace ViewDeckNameSpace
                     ShowDeck();
                 }
                 // toggle deck view
-                else if (showingDeck)
+                else if (showingDeck && pileViewButton != null)
                 {
-                    Debug.Log(pileViewButton);
-                    Debug.Log(pileViewButton.SkillbuttonBig);
-
                     pileViewButton.SkillbuttonBig.Click();
                 }
                 // switch to discard view
-                else if (showingDiscard)
+                else if (showingDiscard && pileViewButton != null)
                 {
                     pileViewButton.SkillbuttonBig.Click();
-                    ShowDiscard();
+                    ShowDeck();
                 }
             }
 
@@ -107,12 +114,12 @@ namespace ViewDeckNameSpace
 
                 }
                 // toggle deck view
-                else if (showingDiscard)
+                else if (showingDiscard && pileViewButton != null)
                 {
                     pileViewButton.SkillbuttonBig.Click();
                 }
                 // switch to discard view
-                else if (showingDeck)
+                else if (showingDeck && pileViewButton != null)
                 {
                     pileViewButton.SkillbuttonBig.Click();
                     ShowDiscard();
@@ -138,9 +145,36 @@ namespace ViewDeckNameSpace
         [HarmonyPatch(typeof(SelectSkillList), nameof(SelectSkillList.NewSelectSkillList))]
         class SelectSkillList_Patch
         {
-            static void Postfix(SelectSkillList __instance)
+
+
+            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
             {
-                pileViewButton = __instance.gameObject.GetComponent<SkillButtonMain>();
+                int i = 0;
+                var ciList = instructions.ToList();
+                var c = ciList.Count();
+                CodeInstruction prevCi = null;
+                foreach (var ci in instructions)
+                {
+                    if (ci.opcode == OpCodes.Ldloc_S && prevCi.opcode == OpCodes.Stloc_S && ciList[Math.Max(0, i-4)].opcode == OpCodes.Ldloc_0)
+                    {
+                        yield return ci; 
+                        yield return new CodeInstruction(OpCodes.Dup);
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SelectSkillList_Patch), nameof(SelectSkillList_Patch.AssignButton)));
+
+                    }
+                    else
+                    {
+                        yield return ci;
+                    }
+                    prevCi = ci;
+                    i++;
+                }
+            }
+
+
+            static void AssignButton(GameObject go)
+            {
+                pileViewButton = go.gameObject.GetComponent<SkillButtonMain>();
             }
         }
 
@@ -148,12 +182,11 @@ namespace ViewDeckNameSpace
 
 
         [HarmonyPatch(typeof(SimpleTooltip), "Start")]
-        class SimpleTooltip_Patch
+        class ClickableIcons_Patch
         {
             static void Postfix(SimpleTooltip __instance)
             {
 
-                Debug.Log(__instance.gameObject.name);
                 if (__instance.gameObject.name == "Image" && __instance.transform.parent.gameObject.name == "Deck")
                 {
 
@@ -203,7 +236,6 @@ namespace ViewDeckNameSpace
 
             static void Postfix(ref string __result)
             {
-                Debug.Log("deck tooltip");
                 __result = __result + "\n Press [[F]] to view.";
             }
         }
@@ -221,8 +253,6 @@ namespace ViewDeckNameSpace
 
             static void Postfix(ref string __result)
             {
-                Debug.Log("disc tooltip");
-
                 __result = __result + "\n Press [[G]] to view.";
             }
         }

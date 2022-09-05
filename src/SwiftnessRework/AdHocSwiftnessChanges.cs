@@ -22,6 +22,7 @@ namespace SwiftnessRework
         static QuickManager quickManager = SwiftnessReworkPlugin.quickManager;
 
         [HarmonyPatch(typeof(GDESkillData), nameof(GDESkillData.LoadFromDict))]
+        [HarmonyPriority(Priority.VeryLow)]
         class GDESkillData_Patch
         {
             static HashSet<string> addQuickSet = new HashSet<string>() 
@@ -32,15 +33,17 @@ namespace SwiftnessRework
                 GDEItemKeys.Skill_S_Lucy_14,
                 GDEItemKeys.Skill_S_Lucy_15,
                 GDEItemKeys.Skill_S_MissChain_2,
-                GDEItemKeys.Skill_S_Prime_12
+                GDEItemKeys.Skill_S_Prime_12,
+                GDEItemKeys.Skill_S_Sizz_0
             };
 
             static void Postfix(GDESkillData __instance, Dictionary<string, object> dict)
             {
                 if (addQuickSet.Contains(__instance.Key))
                 {
-                    dict.TryGetString("Description", out string ogDesc, __instance.Key);
-                    __instance.Description = ogDesc.Replace("Swiftness", "<b>Effortless</b> and <b>Quick</b>");
+                    //dict.TryGetString("Description", out string ogDesc, __instance.Key);
+
+                    __instance.Description = __instance.Description.Replace("Swiftness", "<b>Effortless</b> and <b>Quick</b>");
                     if (!quickManager.defaultQuickness.Contains(__instance.Key))
                     {
                         dict.TryGetCustomList("PlusKeyWords", out List<GDESkillKeywordData> ogKeyWords);
@@ -49,20 +52,7 @@ namespace SwiftnessRework
                     }
 
                 }
-                // eve help
-                else if (__instance.Key == GDEItemKeys.Skill_S_Sizz_0)
-                {
-                    __instance.Description = @"Transfer all Pincer Attack buffs to the target.
- Create a 1 cost 'Eve, Help!' skill in your hand.
- It gains <b>Effortless</b> and <b>Quick</b>.
- The created skill can only be cast this turn.";
-                    if (!quickManager.defaultQuickness.Contains(__instance.Key))
-                    {
-                        dict.TryGetCustomList("PlusKeyWords", out List<GDESkillKeywordData> ogKeyWords);
-                        ogKeyWords.Add(new GDESkillKeywordData(SwiftnessReworkPlugin.QuickKeyWordKey));
-                        __instance.PlusKeyWords = ogKeyWords;
-                    }
-                }
+
             }
         }
 

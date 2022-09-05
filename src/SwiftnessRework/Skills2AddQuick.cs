@@ -30,6 +30,7 @@ namespace SwiftnessRework
             GDEItemKeys.Skill_S_Public_15,
             GDEItemKeys.Skill_S_Public_16,
             GDEItemKeys.Skill_S_Public_9,
+            GDEItemKeys.Skill_S_Public_14,
             // lucy
             GDEItemKeys.Skill_S_LucyD_6,
             GDEItemKeys.Skill_S_LucyD_9,
@@ -212,6 +213,16 @@ namespace SwiftnessRework
             // other
 			GDEItemKeys.Skill_S_MessiahbladesPrototype,
             GDEItemKeys.Skill_S_DefultSkill_2,
+            GDEItemKeys.Skill_S_StraightFlush_0,
+            GDEItemKeys.Skill_S_S2_MainBoss_1_Lucy_0,
+            GDEItemKeys.Skill_S_Witch_P_0,
+            GDEItemKeys.Skill_S_Witch_2,
+            GDEItemKeys.Skill_S_S_TheLight_P_1,
+            GDEItemKeys.Skill_S_Joker_0,
+            GDEItemKeys.Skill_S_Sniper_1,
+            GDEItemKeys.Skill_S_MBoss2_1_5,
+            GDEItemKeys.Skill_S_S4_King_LastAttack_0,
+            GDEItemKeys.Skill_S_Lucy_25,
 
         };
     }

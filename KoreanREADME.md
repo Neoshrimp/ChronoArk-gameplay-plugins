@@ -20,17 +20,13 @@ Step 1. BepInEx를 다운로드하고 설정합니다. [공식 가이드](https:
 
 Step 2. [모드를 다운로드하고](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases) 선택한 .dll 파일을 `BepInEx/plugins` 폴더에 넣습니다.
 
-### *또는*
-
-BepInEx가 포함된 패키지를 다운받습니다. 64비트 버전 [[여기]](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/allplugins_BepInEx_x64_included-13-09-2021.zip), 32비트 버전 [[여기]](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/allplugins_BepInEx_x86_included-13-09-2021.zip). 64비트 버전의 경우 `<크로노 아크 디렉토리>\x64\Master` 또는 32 비트 버전의 경우 `<크로노 아크 디렉토리>\x86\Master` 에 압축을 풉니다 (BepInEx 폴더는 ChronoArk.exe가 있는 동일한 디렉토리에 있어야 함).
-
 ### 단계별 가이드:
 
-1. [BepInEx](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.15)를 다운로드합니다. 올바른 버전(32비트 또는 64비트)을 다운로드해야 합니다.
+1. [BepInEx](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.21)를 다운로드합니다. 올바른 버전(32비트 또는 64비트)을 다운로드해야 합니다.
 2. 로컬 크로노 아크 파일을 찾습니다. 아마도 `C:\Program Files (x86)\Steam\steamapps\common\Chrono Ark\` 에 있을 겁니다. 그렇지 않다면 Steam > 라이브러리 > 크로노 아크 > 관리(:gear: 아이콘) > 속성 > 로컬 파일 > 찾아보기
 3. 64비트 버전을 사용하는 경우 `<크로노 아크 디렉토리>\x64\Master에 BepInEx` 를 압축 풀고 32비트 버전을 사용하는 경우 `<크로노 아크 디렉토리>\x86\Master` 에 압축을 풉니다.
 4. Steam에서 크로노 아크를 실행하면 BepInEx가 `BepInEx\plugins` 폴더를 포함한 관련 파일을 자동생성합니다. 게임을 닫습니다.
-5. [플러그인을 다운로드합니다](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/CAv1.62_allplugins-13-09-2021.zip). 압축을 풀고 dll파일들을 plugins 폴더에 넣습니다.
+5. [플러그인을 다운로드합니다](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases). 압축을 풀고 dll파일들을 plugins 폴더에 넣습니다.
 6. (선택) 세이브 데이터를 백업합니다. 모드가 세이브를 망칠 걱정은 없어서 할 필요는 없습니다. 여전히 원하는 경우 [참조](https://steamcommunity.com/app/1188930/discussions/1/4917340730760337347/).
 7. 게임을 즐깁니다!
 

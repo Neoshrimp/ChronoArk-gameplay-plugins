@@ -27,11 +27,6 @@ Step 1. Download and set-up BepInEx. Refer to [official instructions](https://do
 
 Step 2. [Download mods](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases) and put selected .dll files to `BepInEx/plugins` folder.
 
-### *OR*
-
-Download with BepInEx included. 64-bit version [[here]](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/allplugins_BepInEx_x64_included-13-09-2021.zip), 32-bit version [[here]](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/allplugins_BepInEx_x86_included-13-09-2021.zip). \
-Extract to `<Chrono Ark dir>\x64\Master` for 64-bit version or `<Chrono Ark dir>\x86\Master` for 32-bit (BepInEx folder should be in the same directory where ChronoArk.exe is).
-
 ### Step-by-step guide:
 1. Download [BepInEx](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.21). Make sure to download correct version (32-bit or 64-bit)
 2. Locate local Chrono Ark files. Probably at `C:\Program Files (x86)\Steam\steamapps\common\Chrono Ark\` Otherwise, go to Steam > Library > Chrono Ark > Manage(:gear: icon) > Properties > Local files > Browse

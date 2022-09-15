@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /matchFuzzy.txt
 /create-release.sh
 /src/SwiftnessRework/experimentalFieldManagers
+*.xcf

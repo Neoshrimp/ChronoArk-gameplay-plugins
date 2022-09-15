@@ -367,3 +367,6 @@ FodyWeavers.xsd
 /create-release.sh
 /src/SwiftnessRework/experimentalFieldManagers
 *.xcf
+*.zip
+*.dll
+/oldReadme.txt

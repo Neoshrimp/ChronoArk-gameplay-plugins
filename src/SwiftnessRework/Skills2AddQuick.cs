@@ -124,9 +124,17 @@ namespace SwiftnessRework
             GDEItemKeys.Skill_S_Phoenix_2,
             GDEItemKeys.Skill_S_Phoenix_0,
             GDEItemKeys.Skill_S_Phoenix_4_0,
+            
             //GDEItemKeys.Skill_S_Phoenix_4,
             GDEItemKeys.Skill_S_Phoenix_8,
             GDEItemKeys.Skill_S_Phoenix_9,
+            // find bread
+            //GDEItemKeys.Skill_S_Phoenix_10_0,
+            GDEItemKeys.Skill_S_Phoenix_10_1,
+            GDEItemKeys.Skill_S_Phoenix_5_0,
+            GDEItemKeys.Skill_S_Phoenix_3_0,
+            GDEItemKeys.Skill_S_Phoenix_8_0,
+
             // iron
             GDEItemKeys.Skill_S_Prime_11,
             GDEItemKeys.Skill_S_Prime_12,
@@ -223,6 +231,7 @@ namespace SwiftnessRework
             GDEItemKeys.Skill_S_MBoss2_1_5,
             GDEItemKeys.Skill_S_S4_King_LastAttack_0,
             GDEItemKeys.Skill_S_Lucy_25,
+            GDEItemKeys.Skill_S_DorchiX_Lucy,
 
         };
     }

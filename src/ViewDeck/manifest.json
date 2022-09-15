@@ -1,6 +1,6 @@
 {
     "name": "ViewDeck",
-    "version_number": "1.0.0",
+    "version_number": "1.0.1",
     "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/ViewDeck",
     "description": "View deck and discard",
     "dependencies": []

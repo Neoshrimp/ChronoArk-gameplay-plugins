@@ -30,7 +30,7 @@ namespace SwiftnessRework
 
 		private static readonly Harmony harmony = new Harmony(GUID);
 
-		private static BepInEx.Logging.ManualLogSource logger;
+		public static BepInEx.Logging.ManualLogSource logger;
 
 		public static QuickManager quickManager;
 

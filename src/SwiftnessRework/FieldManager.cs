@@ -99,11 +99,13 @@ namespace SwiftnessRework
                 }
                 else
                 {
+                    SwiftnessReworkPlugin.logger.LogError($"GetVal: no ENTRY with {key} key, {i} index (object: {inst})");
                     throw new Exception($"GetVal: no ENTRY with {key} key, {i} index (object: {inst})");
                 }
             }
             else
             {
+                SwiftnessReworkPlugin.logger.LogError($"GetVal: no BUCKET with {ComputeKey(inst)} key (object: {inst})");
                 throw new Exception($"GetVal: no BUCKET with {ComputeKey(inst)} key (object: {inst})");
             }
             
@@ -121,12 +123,14 @@ namespace SwiftnessRework
                 }
                 else
                 {
+                    SwiftnessReworkPlugin.logger.LogError($"Setval: no ENTRY with {key} key (object: {inst})");
                     throw new Exception($"Setval: no ENTRY with {key} key (object: {inst})");
                 }
 
             }
             else
             {
+                SwiftnessReworkPlugin.logger.LogError($"SetVal: no BUCKET with {ComputeKey(inst)} key (object: {inst})");
                 throw new Exception($"SetVal: no BUCKET with {ComputeKey(inst)} key (object: {inst})");
             }
         }

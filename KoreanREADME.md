@@ -20,10 +20,6 @@ Step 1. BepInEx를 다운로드하고 설정합니다. [공식 가이드](https:
 
 Step 2. [모드를 다운로드하고](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases) 선택한 .dll 파일을 `BepInEx/plugins` 폴더에 넣습니다.
 
-### *또는*
-
-BepInEx가 포함된 패키지를 다운받습니다. 64비트 버전 [[여기]](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/allplugins_BepInEx_x64_included-13-09-2021.zip), 32비트 버전 [[여기]](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases/download/1.1.1/allplugins_BepInEx_x86_included-13-09-2021.zip). 64비트 버전의 경우 `<크로노 아크 디렉토리>\x64\Master` 또는 32 비트 버전의 경우 `<크로노 아크 디렉토리>\x86\Master` 에 압축을 풉니다 (BepInEx 폴더는 ChronoArk.exe가 있는 동일한 디렉토리에 있어야 함).
-
 ### 단계별 가이드:
 
 1. [BepInEx](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.21)를 다운로드합니다. 올바른 버전(32비트 또는 64비트)을 다운로드해야 합니다.

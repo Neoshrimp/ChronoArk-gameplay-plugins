@@ -1,0 +1,7 @@
+{
+    "name": "Select first skill",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/Select_skills_on_Normal",
+    "description": "Relevant only for Normal difficulty",
+    "dependencies": []
+}

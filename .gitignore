@@ -370,3 +370,4 @@ FodyWeavers.xsd
 *.zip
 *.dll
 /oldReadme.txt
+/src/manifest.json

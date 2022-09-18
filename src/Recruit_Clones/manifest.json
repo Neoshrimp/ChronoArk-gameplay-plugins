@@ -1,0 +1,7 @@
+{
+    "name": "RecruitClones",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/Recruit_Clones",
+    "description": "Allows to recruit multiples of the same character",
+    "dependencies": ["BepInEx-BepInExPack_Chrono_Ark-5.4.21"]
+}

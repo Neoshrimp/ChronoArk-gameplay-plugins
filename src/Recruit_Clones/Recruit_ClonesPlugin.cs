@@ -39,7 +39,7 @@ namespace Recruit_Clones
         void OnDestroy()
         {
             if (harmony != null)
-                harmony.UnpatchAll(GUID);
+                harmony.UnpatchSelf();
         }
 
 
@@ -76,6 +76,8 @@ namespace Recruit_Clones
             }
         }
 
+
+        //2do doesn't inject with current version of ca
         [HarmonyPatch(typeof(StartPartySelect), nameof(StartPartySelect.Init))]
         class PartySelectPatch
         {
@@ -120,6 +122,8 @@ namespace Recruit_Clones
                         && ciList[Math.Min(i + 1, c - 1)].opcode == OpCodes.Stloc_S && ((LocalBuilder)ciList[Math.Min(i + 1, c - 1)].operand).LocalIndex == 17
                         )
                     {
+
+                        Debug.Log("deez 1");
                         yield return ci;
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PartySelectPatch), nameof(PartySelectPatch.AddCharacters)));
                     }
@@ -128,6 +132,7 @@ namespace Recruit_Clones
                         && ciList[Math.Max(i - 2, 0)].opcode == OpCodes.Ldloc_S && ((LocalBuilder)ciList[Math.Max(i - 2, 0)].operand).LocalIndex == 17
                         )
                     {
+                        Debug.Log("deez 2");
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PartySelectPatch), nameof(PartySelectPatch.RemoveMultiple)));
                     }
                     else

@@ -1,7 +1,7 @@
 {
     "name": "SelectFirstSkill",
-    "version_number": "1.0.0",
+    "version_number": "1.0.1",
     "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/Select_skills_on_Normal",
     "description": "Relevant only for Normal difficulty",
-    "dependencies": []
+    "dependencies": ["BepInEx-BepInExPack_Chrono_Ark-5.4.21"]
 }

@@ -1,0 +1,7 @@
+{
+    "name": "NoMaxManaRestrictions",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/Alter-mana-restrictions",
+    "description": "Removes max mana leveling restrictions",
+    "dependencies": ["BepInEx-BepInExPack_Chrono_Ark-5.4.21"]
+}

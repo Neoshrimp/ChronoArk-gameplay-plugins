@@ -1,0 +1,7 @@
+{
+    "name": "3turnTFK",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/3-turn-tfk",
+    "description": "Can you slay the TFK in 3 turns?",
+    "dependencies": ["BepInEx-BepInExPack_Chrono_Ark-5.4.21"]
+}

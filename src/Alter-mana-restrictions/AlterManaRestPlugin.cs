@@ -39,8 +39,8 @@ namespace Alter_mana_restrictions
         void Awake()
         {
 
-            firstManaRestriction = configFile.Bind("Restriction config", "first restriction mana value", -1, "Mana value where 3 characters at level 2+ restriction will be applied. Example, setting to 3 won't allow any mana level ups until each of the 3 characters reaches level 2. Set below 3 to disable");
-            secondManaRestriction = configFile.Bind("Restriction config", "second restriction mana value", -1, "Mana value where 4 characters at level 3+ restriction will be applied. Set below 3 to disable. Should be higher than first restriction unless disabled");
+            firstManaRestriction = configFile.Bind("Restriction config", "first restriction mana value", -1, "Mana value where 3 characters at level 2+ restriction will be applied. Example, setting to 3 won't allow any mana level ups until each of the 3 characters reaches level 2. Set below 3 to disable. Vanilla equivalent is 4 (max mana can only be increased up to 4 until char level requirement is satisfied).");
+            secondManaRestriction = configFile.Bind("Restriction config", "second restriction mana value", -1, "Mana value where 4 characters at level 3+ restriction will be applied. Set below 3 to disable. Should be higher than first restriction unless disabled. Vanilla equivalent is 5.");
 
             firstRest = Mathf.Max(firstManaRestriction.Value - 3, -1);
             secondRest = Mathf.Max(secondManaRestriction.Value - 3, -1);

@@ -1,0 +1,7 @@
+{
+    "name": "EasyCWaccess",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/EasyCWaccess",
+    "description": "Facilitates Crimson Wildernes access",
+    "dependencies": ["BepInEx-BepInExPack_Chrono_Ark-5.4.21"]
+}

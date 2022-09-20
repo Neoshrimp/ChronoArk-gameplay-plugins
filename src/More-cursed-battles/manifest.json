@@ -1,0 +1,7 @@
+{
+    "name": "MoreCursedBattle",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/More-cursed-battles",
+    "description": "Increase number of cursed battles per stage",
+    "dependencies": [ "BepInEx-BepInExPack_Chrono_Ark-5.4.21" ]
+}

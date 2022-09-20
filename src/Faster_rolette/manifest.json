@@ -1,0 +1,7 @@
+{
+    "name": "FasterRoullete",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/Faster_rolette",
+    "description": "Removes roullete event start-up animation",
+    "dependencies": ["BepInEx-BepInExPack_Chrono_Ark-5.4.21"]
+}

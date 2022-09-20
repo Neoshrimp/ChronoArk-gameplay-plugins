@@ -1,7 +1,7 @@
 {
     "name": "RemoveHitcap",
-    "version_number": "1.0.0",
+    "version_number": "1.0.1",
     "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/Remove-hitcap",
     "description": "Removes 98% accurary cap on Expert",
-    "dependencies": []
+    "dependencies": ["BepInEx-BepInExPack_Chrono_Ark-5.4.21"]
 }

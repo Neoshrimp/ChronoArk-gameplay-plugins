@@ -1,0 +1,7 @@
+{
+    "name": "BetterPainEqualsHappiness",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/Better-PainEqualsHappiness",
+    "description": "Buffs Pain Equals Happiness",
+    "dependencies": ["BepInEx-BepInExPack_Chrono_Ark-5.4.21"]
+}

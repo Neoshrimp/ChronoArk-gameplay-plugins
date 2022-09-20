@@ -30,6 +30,7 @@ namespace Alternative_ShadowCurtain
 
 
         [HarmonyPatch(typeof(GDESkillData), nameof(GDESkillData.LoadFromDict))]
+        [HarmonyPriority(Priority.High)]
         class GDESkillData_Patch
         {
             static void Postfix(GDESkillData __instance, Dictionary<string, object> dict)

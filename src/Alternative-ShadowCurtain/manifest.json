@@ -1,0 +1,7 @@
+{
+    "name": "AltShadowCurtain",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/Alternative-ShadowCurtain",
+    "description": "Alter Trisha's Shadow Curtain",
+    "dependencies": ["BepInEx-BepInExPack_Chrono_Ark-5.4.21"]
+}

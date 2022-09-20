@@ -1,7 +1,7 @@
 {
     "name": "SwiftnessRework",
-    "version_number": "1.0.0",
+    "version_number": "1.0.2",
     "website_url": "https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/tree/master/src/SwiftnessRework",
     "description": "Swiftness split into Efortless and Quick",
-    "dependencies": []
+    "dependencies": ["BepInEx-BepInExPack_Chrono_Ark-5.4.21"]
 }

@@ -10,4 +10,5 @@ Technically, this plugin alters Swiftness keyword so it doesn't skip action adva
 As this is a system change plugin other mods can rely on it to add Quick as to cards/relics/items as they see fit. This can be more or less achieved by using function provided in *QuickManager.cs*
 
 ---
-[*Manual install instructions*](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins#installation)
+[*Manual install instructions*](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins#installation)  
+**Manual install is the only option for 32-bit version**

@@ -10,7 +10,7 @@ Links to repositories with mods from other creators. Kindly check them out!
 [Mods by windypanda1](https://github.com/fwqefwqef/ChronoArkMods-windy)
 
 ---
-## Plugins updated to work with Chrono Ark version 1.9
+## [Thunderstore](https://chrono-ark.thunderstore.io/) for Chrono Ark is now available!
 
 Repo for various [Chrono Ark](https://store.steampowered.com/app/1188930/Chrono_Ark/) plugins modifying course of the game. 
 Modifications can include new game modes, new or altered items or cards, quality of life improvements and so on.
@@ -23,7 +23,12 @@ Made using  [Harmony](https://github.com/pardeike/Harmony) and [BepInEx](https:/
 
 ## Installation
 
-Step 1. Download and set-up BepInEx. Refer to [official instructions](https://docs.bepinex.dev/master/articles/user_guide/installation/unity_mono.html).
+**Recommended:** use [Thunderstore](https://chrono-ark.thunderstore.io/) with mod manager.
+
+*or, alternatively*
+
+Step 1. Download and set-up BepInEx. [BepInEx for Chorno Ark](https://chrono-ark.thunderstore.io/package/download/BepInEx/BepInExPack_Chrono_Ark/5.4.21/).
+Refer to [official instructions](https://docs.bepinex.dev/master/articles/user_guide/installation/unity_mono.html) for additional details.
 
 Step 2. [Download mods](https://github.com/Neoshrimp/ChronoArk-gameplay-plugins/releases) and put selected .dll files to `BepInEx/plugins` folder.
 

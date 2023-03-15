@@ -14,36 +14,23 @@ using System.Reflection;
 using System.Linq;
 using System.Reflection.Emit;
 
-namespace ViewDeckNameSpace
+namespace ViewDeck
 {
-    [BepInPlugin(GUID, "View deck and discard", version)]
-    [BepInProcess("ChronoArk.exe")]
-    public class ViewDeckPlugin : BaseUnityPlugin
+    public class ViewDeck : MonoBehaviour
     {
-
-        public const string GUID = "neo.ca.qol.viewDeck";
-        public const string version = "1.0.0";
-
-
-        private static readonly Harmony harmony = new Harmony(GUID);
-
-        private static BepInEx.Logging.ManualLogSource logger;
-
 
         void Awake()
         {
-            logger = Logger;
-            harmony.PatchAll();
+            HarmonyContainer.PatchAll();
         }
+
         void OnDestroy()
         {
-            if (harmony != null)
-                harmony.UnpatchAll(GUID);
+            HarmonyContainer.UnpatchAll();
         }
 
-
-//        static List<Skill> frozenDeck;
-//        static HashSet<Skill> frozenContent;
+        //static List<Skill> frozenDeck;
+        //static HashSet<Skill> frozenContent;
 
 
         static void ShowDeck()
@@ -55,7 +42,7 @@ namespace ViewDeckNameSpace
                 var deckCopy = new List<Skill>(BattleSystem.instance.AllyTeam.Skills_Deck);
 
                 BattleSystem.DelayInput(BattleSystem.I_OtherSkillSelect(Misc.Shuffle(deckCopy), DeckDelegate, "Deck in random order\n[click card to close]"));
-                if(BattleSystem.instance.AllyTeam.Skills_Deck.Count == 0)
+                if (BattleSystem.instance.AllyTeam.Skills_Deck.Count == 0)
                     showingDeck = false;
 
             }
@@ -69,7 +56,7 @@ namespace ViewDeckNameSpace
             {
                 showingDiscard = true;
                 BattleSystem.DelayInput(BattleSystem.I_OtherSkillSelect(BattleSystem.instance.AllyTeam.Skills_UsedDeck, DiscardDelegate, "Discard pile\n[click card to close]"));
-                if(BattleSystem.instance.AllyTeam.Skills_UsedDeck.Count == 0)
+                if (BattleSystem.instance.AllyTeam.Skills_UsedDeck.Count == 0)
                     showingDiscard = false;
 
             }
@@ -125,7 +112,7 @@ namespace ViewDeckNameSpace
                     ShowDiscard();
                 }
             }
-           
+
         }
 
 
@@ -155,9 +142,9 @@ namespace ViewDeckNameSpace
                 CodeInstruction prevCi = null;
                 foreach (var ci in instructions)
                 {
-                    if (ci.opcode == OpCodes.Ldloc_S && prevCi.opcode == OpCodes.Stloc_S && ciList[Math.Max(0, i-4)].opcode == OpCodes.Ldloc_0)
+                    if (ci.opcode == OpCodes.Ldloc_S && prevCi.opcode == OpCodes.Stloc_S && ciList[Math.Max(0, i - 4)].opcode == OpCodes.Ldloc_0)
                     {
-                        yield return ci; 
+                        yield return ci;
                         yield return new CodeInstruction(OpCodes.Dup);
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SelectSkillList_Patch), nameof(SelectSkillList_Patch.AssignButton)));
 
@@ -256,6 +243,7 @@ namespace ViewDeckNameSpace
                 __result = __result + "\n Press [[G]] to view.";
             }
         }
+
 
     }
 }

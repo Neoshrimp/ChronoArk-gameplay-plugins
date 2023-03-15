@@ -43,6 +43,9 @@
     <Reference Include="BepInEx">
       <HintPath>..\..\..\..\CAx64_libs\BepInEx.dll</HintPath>
     </Reference>
+    <Reference Include="netstandard">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Chrono Ark\ChronoArk_Data\Managed\netstandard.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -68,11 +71,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewDeckPlugin.cs" />
+    <Compile Include="HarmonyContainer.cs" />
+    <Compile Include="ViewDeck.cs" />
+    <Compile Include="WorkshopPlugin.cs" />
+    <Compile Include="BepisPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y $(TargetPath) "C:\Program Files (x86)\Steam\steamapps\common\Chrono Ark\x64\Master\BepInEx\scripts"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Chrono Ark\x64\Master\BepInEx\scripts"
+
+copy /Y "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\workshop\content\1188930\ViewDeck\Assemblies"
+
+copy /Y "$(TargetPath)" "$(ProjectDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

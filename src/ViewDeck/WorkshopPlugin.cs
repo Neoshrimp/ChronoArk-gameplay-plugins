@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if WORKSHOP
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +25,7 @@ namespace ViewDeck
         public override void Initialize()
         {
 
-            if (!LoadedByBepinex())
+            //if (!CheckBepinex.LoadedByBepinex())
             {
                 Debug.Log($"Loading {HarmonyContainer.GUID} from workshop");
                 attachObject = new GameObject( HarmonyContainer.GUID + "attachObject");
@@ -37,16 +40,7 @@ namespace ViewDeck
             UnityEngine.Object.Destroy(attachObject);
         }
 
-        bool LoadedByBepinex()
-        {
-
-            // there's gotta be a better way
-            if (AppDomain.CurrentDomain.GetAssemblies().ToList().Find(a => a.GetName().Name == "BepInEx") != null)
-            {
-                return BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey(HarmonyContainer.GUID);
-            }
-            return false;
-        }
 
     }
 }
+#endif

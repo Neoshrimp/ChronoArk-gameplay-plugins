@@ -41,7 +41,7 @@ namespace PlayableLucy
         void OnDestroy()
         {
             if (harmony != null)
-                harmony.UnpatchAll(GUID);
+                harmony.UnpatchSelf();
         }
 
         [HarmonyPatch(typeof(SR_Solo), nameof(SR_Solo.GameSetting))]

@@ -1,4 +1,6 @@
-﻿using BepInEx;
+﻿#if BEPINEX
+
+using BepInEx;
 using BepInEx.Configuration;
 using GameDataEditor;
 using HarmonyLib;
@@ -13,6 +15,7 @@ using Debug = UnityEngine.Debug;
 using System.Reflection;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 
 namespace ViewDeck
 {
@@ -21,23 +24,29 @@ namespace ViewDeck
     public class BepisPlugin : BaseUnityPlugin
     {
 
-        
-
         private static BepInEx.Logging.ManualLogSource logger;
-
        
         void Awake()
         {
             logger = Logger;
 
-
-            if(WorkshopPlugin.attachObject == null)
-                gameObject.AddComponent<ViewDeck>();
+            //if(WorkshopPlugin.attachObject == null)
+            gameObject.AddComponent<ViewDeck>();
 
 
         }
+
+        void OnDestroy()
+        {
+            var viewDeck = gameObject.GetComponent<ViewDeck>();
+            if(viewDeck != null)
+                Destroy(viewDeck);
+        }
+
 
 
 
     }
 }
+#endif
+

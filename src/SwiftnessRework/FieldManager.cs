@@ -27,14 +27,14 @@ namespace SwiftnessRework
             fieldDict = new Dictionary<Tkey, List<RefHolder>>();
         }
 
-        public FieldManager(int cap, int defaultListCap)
+        public  FieldManager(int cap, int defaultListCap)
         {
             fieldDict = new Dictionary<Tkey, List<RefHolder>>(cap);
             this.defaultListCap = defaultListCap;
         }
 
 
-        public void AddField(object inst, TfieldVal val)
+        public virtual void AddField(object inst, TfieldVal val)
         {
             var dict = fieldDict;
             var key = ComputeKey(inst);
@@ -88,7 +88,7 @@ namespace SwiftnessRework
             
         }
 
-        public TfieldVal GetVal(object inst)
+        public virtual TfieldVal GetVal(object inst)
         {
             var key = ComputeKey(inst);
             if (fieldDict.TryGetValue(key, out List<RefHolder> bucket))
@@ -112,7 +112,7 @@ namespace SwiftnessRework
 
         }
 
-        public void SetVal(object inst, TfieldVal val)
+        public virtual void SetVal(object inst, TfieldVal val)
         {
             var key = ComputeKey(inst);
             if (fieldDict.TryGetValue(key, out List<RefHolder> bucket))
@@ -137,7 +137,7 @@ namespace SwiftnessRework
 
 
 
-        public void CullDestroyed()
+        public virtual void CullDestroyed()
         {
             var keys2Remove = new List<Tkey>();
             foreach (var kv in fieldDict)

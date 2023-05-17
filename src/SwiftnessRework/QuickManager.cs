@@ -50,5 +50,10 @@ namespace SwiftnessRework
             return GetVal(se);
         }
 
+        public override void SetVal(object inst, bool val)
+        {
+            base.SetVal(inst, val);
+        }
+
     }
 }

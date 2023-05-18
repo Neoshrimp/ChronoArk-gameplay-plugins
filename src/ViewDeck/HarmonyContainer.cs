@@ -39,7 +39,7 @@ namespace ViewDeck
         public static void UnpatchAll()
         {
             if (harmony != null)
-                harmony.UnpatchAll(GUID);
+                harmony.UnpatchSelf();
         }
 
     }

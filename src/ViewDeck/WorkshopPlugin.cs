@@ -1,6 +1,7 @@
 ﻿#if WORKSHOP
 
 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ using ChronoArkMod;
 using ChronoArkMod.Plugin;
 using Debug = UnityEngine.Debug;
 using UnityEngine;
-
-
+using Mono.Cecil;
+using System.Reflection;
 
 namespace ViewDeck
 {
@@ -25,7 +26,10 @@ namespace ViewDeck
         public override void Initialize()
         {
 
-            //if (!CheckBepinex.LoadedByBepinex())
+            DependencyResolutionTest.ParseBadAss();
+
+
+            if (!CheckBepinex.LoadedByBepinex())
             {
                 Debug.Log($"Loading {HarmonyContainer.GUID} from workshop");
                 attachObject = new GameObject( HarmonyContainer.GUID + "attachObject");
@@ -39,6 +43,8 @@ namespace ViewDeck
         {
             UnityEngine.Object.Destroy(attachObject);
         }
+
+
 
 
     }

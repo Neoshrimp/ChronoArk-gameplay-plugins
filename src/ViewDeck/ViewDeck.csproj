@@ -117,11 +117,14 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ChronoArkMod.json" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Chrono Ark\x64\Master\BepInEx\scripts"
+    <PostBuildEvent>rem copy /Y "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Chrono Ark\x64\Master\BepInEx\scripts"
 
-copy /Y "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\workshop\content\1188930\ViewDeck\Assemblies"
+rem copy /Y "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\workshop\content\1188930\ViewDeck\Assemblies"
 
 copy /Y "$(TargetPath)" "$(ProjectDir)"</PostBuildEvent>
   </PropertyGroup>

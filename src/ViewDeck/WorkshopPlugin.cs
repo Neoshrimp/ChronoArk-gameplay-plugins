@@ -2,16 +2,9 @@
 
 
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ChronoArkMod;
 using ChronoArkMod.Plugin;
 using Debug = UnityEngine.Debug;
 using UnityEngine;
-using Mono.Cecil;
-using System.Reflection;
 
 namespace ViewDeck
 {
@@ -25,9 +18,6 @@ namespace ViewDeck
      
         public override void Initialize()
         {
-
-            DependencyResolutionTest.ParseBadAss();
-
 
             if (!CheckBepinex.LoadedByBepinex())
             {

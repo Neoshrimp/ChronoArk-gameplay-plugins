@@ -39,7 +39,12 @@ namespace ViewDeck
         public static void UnpatchAll()
         {
             if (harmony != null)
+#if WORKSHOP
                 harmony.UnpatchSelf();
+#endif
+#if BEPINEX
+                harmony.UnpatchAll();
+#endif
         }
 
     }

@@ -1,4 +1,6 @@
-﻿using ChronoArkMod;
+﻿#if false
+
+using ChronoArkMod;
 using ChronoArkMod.Plugin;
 using System;
 using System.Collections;
@@ -55,3 +57,4 @@ namespace ViewDeck
 
     }
 }
+#endif

@@ -1,0 +1,26 @@
+{
+    "id": "ViewDeck",
+    "Title": "ViewDeck/Title",
+    "Author": "Neoshrimp",
+    "Description": "ViewDeck/Description",
+    "Version": "1.0.0",
+    "Cover": "icon.png",
+    "ModSettingEntries": [
+        
+    ],
+    "DefaultAssetBundlePath": "",
+    "Dependencies": [
+        
+    ],
+    "NeedRestartWhenSettingChanged": false,
+    "NeedReloadAllWhenEnabled": false,
+    "NeedRestartWhenEnabled": false,
+    "Uploader": "neo",
+    "TagList": [
+        "GamePlay",
+        "QoL"
+    ],
+    "Visibility": "Public",
+    "ChangeNote": "Initial upload",
+    "WorkShopId": "3027765042",
+}
